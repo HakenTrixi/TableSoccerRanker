@@ -1,0 +1,4 @@
+ALTER TABLE users ADD COLUMN password VARCHAR(255);
+ALTER TABLE users ADD COLUMN username VARCHAR(100) UNIQUE;
+ALTER TABLE users ALTER COLUMN google_sub DROP NOT NULL;
+CREATE UNIQUE INDEX idx_users_username ON users(username) WHERE username IS NOT NULL;

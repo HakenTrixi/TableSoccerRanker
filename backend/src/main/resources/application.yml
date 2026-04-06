@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: tablesoccer-ranker
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/tablesoccer}
+    username: ${SPRING_DATASOURCE_USERNAME:tablesoccer}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID:your-client-id}
+            client-secret: ${GOOGLE_CLIENT_SECRET:your-client-secret}
+            scope: openid,profile,email
+
+app:
+  frontend-url: ${FRONTEND_URL:http://localhost:5173}
+  allowed-domain: ${ALLOWED_DOMAIN:trixi.cz}
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+server:
+  port: 8080
+
+logging:
+  level:
+    com.tablesoccer: DEBUG
+    org.springframework.security: DEBUG

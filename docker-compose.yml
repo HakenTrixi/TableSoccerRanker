@@ -1,0 +1,56 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: tablesoccer-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-tablesoccer}
+      POSTGRES_USER: ${POSTGRES_USER:-tablesoccer}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    ports:
+      - "5434:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-tablesoccer}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: tablesoccer-backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-tablesoccer}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-tablesoccer}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-your-client-id}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-your-client-secret}
+      FRONTEND_URL: http://localhost
+      ALLOWED_DOMAIN: ${ALLOWED_DOMAIN:-trixi.cz}
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build: ./frontend
+    container_name: tablesoccer-frontend
+    environment:
+      ORIGIN: http://localhost
+    ports:
+      - "3000:3000"
+
+  nginx:
+    image: nginx:alpine
+    container_name: tablesoccer-proxy
+    depends_on:
+      - backend
+      - frontend
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+
+volumes:
+  pgdata:

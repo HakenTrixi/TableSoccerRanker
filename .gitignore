@@ -1,0 +1,46 @@
+# Java / Gradle
+backend/build/
+backend/.gradle/
+backend/bin/
+backend/out/
+*.class
+*.jar
+*.war
+
+# Gradle wrapper (keep gradle-wrapper.jar tracked)
+!backend/gradle/wrapper/gradle-wrapper.jar
+
+# Node / SvelteKit
+frontend/node_modules/
+frontend/.svelte-kit/
+frontend/build/
+frontend/dist/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+
+# Claude Code
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+
+# Test scripts and data (local only)
+test_*.py
+test_*.csv
+zapasy_*.txt
+zapasy_*.csv

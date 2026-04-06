@@ -1,0 +1,18 @@
+@import 'tailwindcss';
+
+:root {
+	--color-yellow-team: #eab308;
+	--color-white-team: #e5e7eb;
+}
+
+/* All interactive elements should show pointer cursor */
+button,
+a,
+[role="button"],
+[onclick] {
+	cursor: pointer;
+}
+
+button:disabled {
+	cursor: not-allowed;
+}

@@ -13,6 +13,8 @@ java {
     }
 }
 
+extra["testcontainers.version"] = "1.21.1"
+
 repositories {
     mavenCentral()
 }
@@ -37,9 +39,17 @@ dependencies {
     // Test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
+    testImplementation("org.springframework.boot:spring-boot-testcontainers")
+    testImplementation("org.testcontainers:junit-jupiter:1.21.1")
+    testImplementation("org.testcontainers:postgresql:1.21.1")
+    // Force docker-java upgrade for Docker Desktop 4.61+ compatibility
+    testImplementation("com.github.docker-java:docker-java-api:3.7.1")
+    testImplementation("com.github.docker-java:docker-java-transport-zerodep:3.7.1")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    // Docker Desktop 4.61+ requires minimum API v1.44; docker-java needs this hint
+    jvmArgs("-Dapi.version=1.44")
 }

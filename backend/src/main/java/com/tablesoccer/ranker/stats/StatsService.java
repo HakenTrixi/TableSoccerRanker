@@ -325,8 +325,9 @@ public class StatsService {
         int streakCount = currentWinStreak > 0 ? currentWinStreak : currentLoseStreak;
         var currentStreakInfo = new PlayerStats.StreakInfo(streakType, streakCount);
 
-        // Zlatý Bludišťák wins for this player — reuse player's matches
-        var bludistakData = computeBludistakWinners(playerMatches);
+        // Zlatý Bludišťák wins for this player — must use ALL matches to determine correct monthly winners
+        List<Match> allMatches = matchRepository.findAllByOrderByPlayedAtAsc();
+        var bludistakData = computeBludistakWinners(allMatches);
         int bludistakWins = bludistakData.winsPerPlayer().getOrDefault(userId, 0);
 
         return new PlayerStats(

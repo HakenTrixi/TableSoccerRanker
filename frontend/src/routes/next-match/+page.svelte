@@ -345,10 +345,12 @@
 			<div class="grid grid-cols-2 gap-6">
 				<!-- Yellow score -->
 				<div class="text-center">
-					<div class="flex items-center gap-2 justify-center mb-3">
+					<div class="flex items-center gap-2 justify-center mb-1">
 						<div class="w-4 h-4 rounded-full bg-yellow-400"></div>
 						<span class="font-bold text-yellow-800">Yellow</span>
 					</div>
+					<p class="text-xs text-gray-600 truncate">{yellowAttacker?.displayName}</p>
+					<p class="text-xs text-gray-600 truncate mb-2">{yellowDefender?.displayName}</p>
 					<div class="flex items-center justify-center gap-3">
 						<button onclick={() => changeYellow(-1)}
 							class="w-12 h-12 rounded-full bg-gray-100 text-2xl font-bold hover:bg-gray-200 flex items-center justify-center">-</button>
@@ -360,10 +362,12 @@
 
 				<!-- White score -->
 				<div class="text-center">
-					<div class="flex items-center gap-2 justify-center mb-3">
+					<div class="flex items-center gap-2 justify-center mb-1">
 						<div class="w-4 h-4 rounded-full bg-gray-300 border border-gray-400"></div>
 						<span class="font-bold text-gray-700">White</span>
 					</div>
+					<p class="text-xs text-gray-600 truncate">{whiteAttacker?.displayName}</p>
+					<p class="text-xs text-gray-600 truncate mb-2">{whiteDefender?.displayName}</p>
 					<div class="flex items-center justify-center gap-3">
 						<button onclick={() => changeWhite(-1)}
 							class="w-12 h-12 rounded-full bg-gray-100 text-2xl font-bold hover:bg-gray-200 flex items-center justify-center">-</button>

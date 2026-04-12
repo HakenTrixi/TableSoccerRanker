@@ -101,6 +101,18 @@
 	// Tooltip
 	let hoverIdx: number | null = $state(null);
 
+	// Performance ring data
+	const RING_RADIUS = 38;
+	const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
+	function ringOffset(pct: number) { return RING_CIRCUMFERENCE * (1 - pct / 100); }
+
+	let performanceRings = $derived(stats ? [
+		{ label: 'Attacker ELO', winRate: stats.attackerStats.winRate, matches: stats.attackerStats.matches, color: '#4595da', showMatches: true },
+		{ label: 'Defender ELO', winRate: stats.defenderStats.winRate, matches: stats.defenderStats.matches, color: '#285694', showMatches: true },
+		{ label: 'Yellow', winRate: stats.yellowStats.winRate, matches: stats.yellowStats.matches, color: '#fac400', showMatches: false },
+		{ label: 'White', winRate: stats.whiteStats.winRate, matches: stats.whiteStats.matches, color: '#9ca3af', showMatches: false },
+	] : []);
+
 	onMount(async () => {
 		try {
 			const [p, s, timelines] = await Promise.all([
@@ -123,14 +135,14 @@
 {:else if !stats || !player}
 	<div class="text-center py-12 text-gray-400">Loading...</div>
 {:else}
-	<div class="space-y-6">
-		<!-- Header -->
-		<div class="bg-white rounded-xl shadow-sm p-4 sm:p-6">
-			<div class="flex items-center gap-3 sm:gap-4">
+	<div class="space-y-4">
+		<!-- 1. Header Card -->
+		<div class="bg-white rounded-2xl border border-brand-cloud-blue p-4 sm:p-6 animate-fade-in-up" style="--delay: 0ms">
+			<div class="flex items-center gap-4">
 				{#if player.avatarUrl}
-					<img src={player.avatarUrl} alt={player.displayName} class="w-12 h-12 sm:w-16 sm:h-16 rounded-full shrink-0" />
+					<img src={player.avatarUrl} alt={player.displayName} class="w-20 h-20 rounded-full ring-4 ring-brand-blue/20 shrink-0" />
 				{:else}
-					<div class="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gray-200 flex items-center justify-center text-xl sm:text-2xl font-bold text-gray-500 shrink-0">
+					<div class="w-20 h-20 rounded-full ring-4 ring-brand-blue/20 bg-brand-cloud-blue flex items-center justify-center text-2xl font-bold text-brand-blue shrink-0">
 						{player.displayName?.[0] ?? '?'}
 					</div>
 				{/if}
@@ -144,117 +156,143 @@
 							</div>
 						{/if}
 					</div>
-					<div class="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm text-gray-500 mt-0.5">
-						<span>ELO <strong class="text-gray-900">{player.eloRating}</strong></span>
-						<span class="text-gray-300">|</span>
-						<span>ATT <strong class="text-blue-600">{stats.attackerElo}</strong></span>
-						<span class="text-gray-300">|</span>
-						<span>DEF <strong class="text-green-600">{stats.defenderElo}</strong></span>
+				</div>
+				<div class="hidden sm:flex items-center gap-4 shrink-0">
+					<div class="text-center">
+						<p class="text-xs text-gray-400 uppercase tracking-wide">ELO</p>
+						<p class="text-2xl font-bold text-green-600">{player.eloRating}</p>
+					</div>
+					<div class="w-px h-10 bg-gray-200"></div>
+					<div class="text-center">
+						<p class="text-xs text-gray-400 uppercase tracking-wide">ATT</p>
+						<p class="text-2xl font-bold text-gray-700">{stats.attackerElo}</p>
+					</div>
+					<div class="w-px h-10 bg-gray-200"></div>
+					<div class="text-center">
+						<p class="text-xs text-gray-400 uppercase tracking-wide">DEF</p>
+						<p class="text-2xl font-bold text-gray-700">{stats.defenderElo}</p>
 					</div>
 				</div>
 			</div>
-		</div>
-
-		<!-- Quick stats -->
-		<div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-			<div class="bg-white rounded-xl shadow-sm p-4 text-center">
-				<p class="text-2xl font-bold text-gray-900">{stats.totalMatches}</p>
-				<p class="text-xs text-gray-500">Matches</p>
-			</div>
-			<div class="bg-white rounded-xl shadow-sm p-4 text-center">
-				<p class="text-2xl font-bold text-green-600">{stats.winRate}%</p>
-				<p class="text-xs text-gray-500">Win Rate</p>
-			</div>
-			<div class="bg-white rounded-xl shadow-sm p-4 text-center">
-				<p class="text-2xl font-bold text-gray-900">{stats.wins}W {stats.losses}L {stats.draws}D</p>
-				<p class="text-xs text-gray-500">Record</p>
-			</div>
-			<div class="bg-white rounded-xl shadow-sm p-4 text-center">
-				<p class="text-2xl font-bold text-gray-900">{stats.avgGoalsScoredPerMatch}</p>
-				<p class="text-xs text-gray-500">Avg Goals/Match</p>
+			<!-- Mobile ELO row -->
+			<div class="flex sm:hidden items-center justify-around mt-4 pt-4 border-t border-gray-100">
+				<div class="text-center">
+					<p class="text-xs text-gray-400 uppercase tracking-wide">ELO</p>
+					<p class="text-xl font-bold text-green-600">{player.eloRating}</p>
+				</div>
+				<div class="w-px h-8 bg-gray-200"></div>
+				<div class="text-center">
+					<p class="text-xs text-gray-400 uppercase tracking-wide">ATT</p>
+					<p class="text-xl font-bold text-gray-700">{stats.attackerElo}</p>
+				</div>
+				<div class="w-px h-8 bg-gray-200"></div>
+				<div class="text-center">
+					<p class="text-xs text-gray-400 uppercase tracking-wide">DEF</p>
+					<p class="text-xl font-bold text-gray-700">{stats.defenderElo}</p>
+				</div>
 			</div>
 		</div>
 
-		<!-- Streaks & Biggest Win -->
-		<div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-			<div class="bg-white rounded-xl shadow-sm p-4 text-center">
-				<p class="text-2xl font-bold text-green-600">{stats.longestWinStreak}</p>
-				<p class="text-xs text-gray-500">Longest Win Streak</p>
-			</div>
-			<div class="bg-white rounded-xl shadow-sm p-4 text-center">
-				<p class="text-2xl font-bold text-red-500">{stats.longestLoseStreak}</p>
-				<p class="text-xs text-gray-500">Longest Lose Streak</p>
-			</div>
-			{#if stats.biggestWin}
-				<div class="bg-white rounded-xl shadow-sm p-4 text-center">
-					<p class="text-2xl font-bold text-gray-900">{stats.biggestWin.description}</p>
-					<p class="text-xs text-gray-500">Biggest Win (+{stats.biggestWin.goalDiff})</p>
+		<!-- 2. Overview Card -->
+		<div class="bg-white rounded-2xl border border-brand-cloud-blue p-5 sm:p-6 animate-fade-in-up" style="--delay: 60ms">
+			<h2 class="font-bold text-gray-900 mb-4">Overview</h2>
+			<div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-0 md:divide-x md:divide-gray-200">
+				<div class="text-center px-4">
+					<p class="text-2xl sm:text-3xl font-bold text-gray-900">{stats.totalMatches}</p>
+					<p class="text-xs text-gray-500 mt-1">Matches</p>
 				</div>
-			{/if}
-			<div class="bg-white rounded-xl shadow-sm p-4 text-center">
-				{#if stats.currentStreak.type === 'WIN'}
-					<p class="text-2xl font-bold text-green-600">{stats.currentStreak.count}W</p>
-				{:else if stats.currentStreak.type === 'LOSE'}
-					<p class="text-2xl font-bold text-red-500">{stats.currentStreak.count}L</p>
-				{:else}
-					<p class="text-2xl font-bold text-gray-400">-</p>
-				{/if}
-				<p class="text-xs text-gray-500">Current Streak</p>
+				<div class="text-center px-4">
+					<p class="text-2xl sm:text-3xl font-bold text-gray-900">{stats.winRate}%</p>
+					<p class="text-xs text-gray-500 mt-1">Win Rate</p>
+				</div>
+				<div class="text-center px-4">
+					<p class="text-2xl sm:text-3xl font-bold">
+						<span class="text-green-600">{stats.wins}W</span>
+						{' '}
+						<span class="text-red-500">{stats.losses}L</span>
+					</p>
+					<p class="text-xs text-gray-500 mt-1">Record</p>
+				</div>
+				<div class="text-center px-4">
+					<p class="text-2xl sm:text-3xl font-bold text-gray-900">{stats.avgGoalsScoredPerMatch}</p>
+					<p class="text-xs text-gray-500 mt-1">Avg Goals/Match</p>
+				</div>
 			</div>
 		</div>
 
-		<!-- ELO Stats -->
-		{#if stats.highestEloEver != null}
-			<div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-				<div class="bg-white rounded-xl shadow-sm p-4 text-center">
-					<p class="text-2xl font-bold text-green-600">{stats.highestEloEver}</p>
-					<p class="text-xs text-gray-500">Highest ELO</p>
-				</div>
-				<div class="bg-white rounded-xl shadow-sm p-4 text-center">
-					<p class="text-2xl font-bold text-red-500">{stats.lowestEloEver}</p>
-					<p class="text-xs text-gray-500">Lowest ELO</p>
-				</div>
-				<div class="bg-white rounded-xl shadow-sm p-4 text-center">
-					<p class="text-2xl font-bold text-green-600">+{stats.biggestEloGain}</p>
-					<p class="text-xs text-gray-500">Best ELO Gain</p>
-				</div>
-				<div class="bg-white rounded-xl shadow-sm p-4 text-center">
-					<p class="text-2xl font-bold text-red-500">{stats.biggestEloLoss}</p>
-					<p class="text-xs text-gray-500">Worst ELO Loss</p>
-				</div>
-			</div>
-		{/if}
-
-		<!-- Form (last 10) -->
-		<div class="bg-white rounded-xl shadow-sm p-4">
-			<h2 class="font-semibold text-gray-900 mb-3">Recent Form</h2>
-			<div class="flex gap-1.5">
-				{#each stats.recentForm as entry}
-					<div class="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold
-						{entry.won ? 'bg-green-100 text-green-700' : entry.goalDiff === 0 ? 'bg-gray-100 text-gray-500' : 'bg-red-100 text-red-700'}">
-						{entry.won ? 'W' : entry.goalDiff === 0 ? 'D' : 'L'}
+		<!-- 3. Performance Card (Donut Rings) -->
+		<div class="bg-white rounded-2xl border border-brand-cloud-blue p-5 sm:p-6 animate-fade-in-up" style="--delay: 120ms">
+			<h2 class="font-bold text-gray-900 mb-6">Performance</h2>
+			<div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+				{#each performanceRings as ring}
+					{@const offset = ringOffset(ring.winRate)}
+					<div class="flex flex-col items-center text-center">
+						<svg width="100" height="100" viewBox="0 0 100 100">
+							<circle cx="50" cy="50" r={RING_RADIUS} fill="none" stroke="#e4f5fd" stroke-width="7" />
+							<circle cx="50" cy="50" r={RING_RADIUS} fill="none" stroke={ring.color} stroke-width="7"
+								stroke-dasharray={RING_CIRCUMFERENCE} stroke-dashoffset={offset}
+								stroke-linecap="round" transform="rotate(-90 50 50)"
+								class="animate-ring-fill" style="--ring-offset: {offset}; --ring-circumference: {RING_CIRCUMFERENCE}" />
+							<text x="50" y="50" text-anchor="middle" dominant-baseline="central"
+								font-size="18" font-weight="bold" fill="#1f2937">{ring.winRate.toFixed(0)}%</text>
+						</svg>
+						<p class="text-sm font-semibold text-gray-700 mt-2">{ring.label}</p>
+						<p class="text-xs text-gray-500">
+							{ring.winRate.toFixed(0)}% win{#if ring.showMatches}, {ring.matches}{/if}
+						</p>
 					</div>
-				{:else}
-					<p class="text-gray-400 text-sm">No matches yet</p>
 				{/each}
 			</div>
 		</div>
 
-		<!-- ELO Progression Chart -->
+		<!-- 4. Streaks Card -->
+		<div class="bg-white rounded-2xl border border-brand-cloud-blue p-5 sm:p-6 animate-fade-in-up" style="--delay: 180ms">
+			<h2 class="font-bold text-gray-900 mb-4">Streaks</h2>
+			<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+				<div class="flex items-center justify-between p-3 bg-brand-light-gray rounded-xl">
+					<span class="text-sm text-gray-600">Longest Win Streak:</span>
+					<span class="text-lg font-bold text-green-600">{stats.longestWinStreak}</span>
+				</div>
+				<div class="flex items-center justify-between p-3 bg-brand-light-gray rounded-xl">
+					<span class="text-sm text-gray-600">Longest Lose Streak:</span>
+					<span class="text-lg font-bold text-red-500">{stats.longestLoseStreak}</span>
+				</div>
+				{#if stats.biggestWin}
+					<div class="flex items-center justify-between p-3 bg-brand-light-gray rounded-xl">
+						<span class="text-sm text-gray-600">Biggest Win (+{stats.biggestWin.goalDiff}):</span>
+						<span class="text-lg font-bold text-gray-900">{stats.biggestWin.description}</span>
+					</div>
+				{/if}
+				<div class="flex items-center justify-between p-3 bg-brand-light-gray rounded-xl">
+					<span class="text-sm text-gray-600">Current Streak:</span>
+					{#if stats.currentStreak.type === 'WIN'}
+						<span class="text-lg font-bold text-green-600">{stats.currentStreak.count}W</span>
+					{:else if stats.currentStreak.type === 'LOSE'}
+						<span class="text-lg font-bold text-red-500">{stats.currentStreak.count}L</span>
+					{:else}
+						<span class="text-lg font-bold text-gray-400">-</span>
+					{/if}
+				</div>
+			</div>
+		</div>
+
+		<!-- 5. ELO Progression Chart -->
 		{#if allDataPoints.length > 1}
-			<div class="bg-white rounded-xl shadow-sm p-4">
-				<div class="flex items-center justify-between gap-2 mb-4">
-					<h2 class="font-semibold text-gray-900 shrink-0">ELO Progression</h2>
-					<div class="flex gap-0.5 bg-gray-100 rounded-lg p-0.5">
-						{#each (['30d', '90d', '365d', 'all'] as const) as p}
-							<button
-								onclick={() => period = p}
-								class="py-1 px-2 sm:px-2.5 rounded-md text-xs font-medium transition-all
-									{period === p ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}"
-							>
-								{periodLabels[p]}
-							</button>
-						{/each}
+			<div class="bg-white rounded-2xl border border-brand-cloud-blue p-4 sm:p-6 animate-fade-in-up" style="--delay: 240ms">
+				<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+					<h2 class="font-bold text-gray-900 shrink-0">ELO Progression</h2>
+					<div class="flex items-center gap-3">
+						<div class="flex gap-0.5 bg-brand-cloud-blue rounded-lg p-0.5">
+							{#each (['30d', '90d', '365d', 'all'] as const) as p}
+								<button
+									onclick={() => period = p}
+									class="py-1 px-2 sm:px-2.5 rounded-md text-xs font-medium transition-all
+										{period === p ? 'bg-brand-blue text-white shadow-sm' : 'text-brand-blue/60 hover:text-brand-blue'}"
+								>
+									{periodLabels[p]}
+								</button>
+							{/each}
+						</div>
 					</div>
 				</div>
 
@@ -263,12 +301,14 @@
 				{:else}
 					{@const currentElo = chartPoints[chartPoints.length - 1].elo}
 					{@const eloDiff = chartPoints[chartPoints.length - 1].elo - chartPoints[0].elo}
-					<!-- Current ELO indicator -->
-					<div class="flex items-baseline gap-2 mb-3">
-						<span class="text-2xl font-bold text-blue-600">{currentElo}</span>
-						<span class="text-sm font-medium {eloDiff >= 0 ? 'text-green-600' : 'text-red-500'}">
-							{eloDiff >= 0 ? '+' : ''}{eloDiff} in this period
-						</span>
+					<div class="flex items-baseline justify-between mb-3">
+						<div></div>
+						<div class="text-right">
+							<span class="text-3xl font-bold text-gray-900">{currentElo}</span>
+							<p class="text-sm font-medium {eloDiff >= 0 ? 'text-green-600' : 'text-red-500'}">
+								{eloDiff >= 0 ? '+' : ''}{eloDiff} in this period
+							</p>
+						</div>
 					</div>
 
 					<div
@@ -283,8 +323,8 @@
 						>
 							<defs>
 								<linearGradient id="eloFill" x1="0" y1="0" x2="0" y2="1">
-									<stop offset="0%" stop-color="#3b82f6" stop-opacity="0.15" />
-									<stop offset="100%" stop-color="#3b82f6" stop-opacity="0.02" />
+									<stop offset="0%" stop-color="#285694" stop-opacity="0.15" />
+									<stop offset="100%" stop-color="#285694" stop-opacity="0.02" />
 								</linearGradient>
 							</defs>
 
@@ -303,9 +343,9 @@
 							<path d={areaPath()} fill="url(#eloFill)" />
 
 							<!-- Line -->
-							<path d={linePath()} fill="none" stroke="#3b82f6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" />
+							<path d={linePath()} fill="none" stroke="#285694" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" />
 
-							<!-- Hover hit areas (invisible wide rects for each point) -->
+							<!-- Hover hit areas -->
 							{#each chartPoints as p, i}
 								{@const x = xPos(i)}
 								{@const halfGap = plotW / Math.max(chartPoints.length - 1, 1) / 2}
@@ -321,12 +361,8 @@
 								{@const hp = chartPoints[hoverIdx]}
 								{@const hx = xPos(hoverIdx)}
 								{@const hy = yPos(hp.elo)}
-								<!-- Vertical line -->
-								<line x1={hx} y1={padT} x2={hx} y2={padT + plotH} stroke="#3b82f6" stroke-width="1" stroke-dasharray="3,3" opacity="0.4" />
-								<!-- Dot -->
-								<circle cx={hx} cy={hy} r="5" fill="#3b82f6" stroke="white" stroke-width="2" />
-								<!-- Tooltip background -->
-								{@const tooltipText = `${hp.elo}  ${formatLabel(hp.bucket)}`}
+								<line x1={hx} y1={padT} x2={hx} y2={padT + plotH} stroke="#285694" stroke-width="1" stroke-dasharray="3,3" opacity="0.4" />
+								<circle cx={hx} cy={hy} r="5" fill="#285694" stroke="white" stroke-width="2" />
 								{@const tx = Math.min(Math.max(hx, padL + 40), chartW - padR - 40)}
 								<rect x={tx - 38} y={hy - 30} width="76" height="22" rx="4" fill="#1f2937" opacity="0.9" />
 								<text x={tx} y={hy - 15} fill="white" font-size="10" text-anchor="middle" font-weight="600">{hp.elo}</text>
@@ -334,10 +370,10 @@
 								<text x={tx} y={hy - 39} fill="#d1d5db" font-size="9" text-anchor="middle">{formatLabel(hp.bucket)}</text>
 							{/if}
 
-							<!-- Static dots (small, for visual anchor) -->
+							<!-- Static dots -->
 							{#each chartPoints as p, i}
 								{#if hoverIdx !== i}
-									<circle cx={xPos(i)} cy={yPos(p.elo)} r="2.5" fill="#3b82f6" opacity="0.6" />
+									<circle cx={xPos(i)} cy={yPos(p.elo)} r="2.5" fill="#285694" opacity="0.6" />
 								{/if}
 							{/each}
 						</svg>
@@ -346,73 +382,53 @@
 			</div>
 		{/if}
 
-		<!-- Role and Color stats -->
-		<div class="grid md:grid-cols-2 gap-4">
-			<div class="bg-white rounded-xl shadow-sm p-4">
-				<h2 class="font-semibold text-gray-900 mb-3">Role Performance</h2>
-				<div class="space-y-3">
-					<div>
-						<div class="flex justify-between text-sm mb-1">
-							<span class="text-gray-600">Attacker <span class="text-blue-600 font-mono text-xs">ELO {stats.attackerElo}</span></span>
-							<span class="font-medium">{stats.attackerStats.winRate.toFixed(0)}% win ({stats.attackerStats.matches})</span>
-						</div>
-						<div class="h-2 bg-gray-100 rounded-full overflow-hidden">
-							<div class="h-full bg-blue-500 rounded-full" style="width: {stats.attackerStats.winRate}%"></div>
-						</div>
-					</div>
-					<div>
-						<div class="flex justify-between text-sm mb-1">
-							<span class="text-gray-600">Defender <span class="text-green-600 font-mono text-xs">ELO {stats.defenderElo}</span></span>
-							<span class="font-medium">{stats.defenderStats.winRate.toFixed(0)}% win ({stats.defenderStats.matches})</span>
-						</div>
-						<div class="h-2 bg-gray-100 rounded-full overflow-hidden">
-							<div class="h-full bg-green-500 rounded-full" style="width: {stats.defenderStats.winRate}%"></div>
+		<!-- 6. Best Partner & Nemesis -->
+		{#if stats.bestPartner || stats.nemesis}
+			<div class="grid md:grid-cols-2 gap-4 animate-fade-in-up" style="--delay: 300ms">
+				{#if stats.bestPartner}
+					<div class="bg-white rounded-2xl border border-brand-cloud-blue p-4 sm:p-5">
+						<h2 class="font-bold text-gray-900 mb-3">Best Partner</h2>
+						<div class="flex items-center gap-3">
+							<div class="w-12 h-12 rounded-full bg-brand-cloud-blue flex items-center justify-center text-lg font-bold text-brand-blue shrink-0">
+								{stats.bestPartner.displayName?.[0] ?? '?'}
+							</div>
+							<div>
+								<p class="text-lg font-semibold text-gray-900">{stats.bestPartner.displayName}</p>
+								<p class="text-sm text-gray-500">{stats.bestPartner.winRate}% win rate ({stats.bestPartner.matches} matches)</p>
+							</div>
 						</div>
 					</div>
-				</div>
+				{/if}
+				{#if stats.nemesis}
+					<div class="bg-white rounded-2xl border border-brand-cloud-blue p-4 sm:p-5">
+						<h2 class="font-bold text-gray-900 mb-3">Nemesis</h2>
+						<div class="flex items-center gap-3">
+							<div class="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-lg font-bold text-red-500 shrink-0">
+								{stats.nemesis.displayName?.[0] ?? '?'}
+							</div>
+							<div>
+								<p class="text-lg font-semibold text-gray-900">{stats.nemesis.displayName}</p>
+								<p class="text-sm text-gray-500">{stats.nemesis.lossRate}% loss rate ({stats.nemesis.matches} matches)</p>
+							</div>
+						</div>
+					</div>
+				{/if}
 			</div>
+		{/if}
 
-			<div class="bg-white rounded-xl shadow-sm p-4">
-				<h2 class="font-semibold text-gray-900 mb-3">Team Color Performance</h2>
-				<div class="space-y-3">
-					<div>
-						<div class="flex justify-between text-sm mb-1">
-							<span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-yellow-400"></span> Yellow</span>
-							<span class="font-medium">{stats.yellowStats.winRate.toFixed(0)}% win ({stats.yellowStats.matches})</span>
-						</div>
-						<div class="h-2 bg-gray-100 rounded-full overflow-hidden">
-							<div class="h-full bg-yellow-400 rounded-full" style="width: {stats.yellowStats.winRate}%"></div>
-						</div>
+		<!-- 7. Recent Form -->
+		<div class="bg-white rounded-2xl border border-brand-cloud-blue p-4 sm:p-5 animate-fade-in-up" style="--delay: 360ms">
+			<h2 class="font-bold text-gray-900 mb-3">Recent Form</h2>
+			<div class="flex gap-1.5">
+				{#each stats.recentForm as entry}
+					<div class="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold
+						{entry.won ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}">
+						{entry.won ? 'W' : 'L'}
 					</div>
-					<div>
-						<div class="flex justify-between text-sm mb-1">
-							<span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-gray-300 border border-gray-400"></span> White</span>
-							<span class="font-medium">{stats.whiteStats.winRate.toFixed(0)}% win ({stats.whiteStats.matches})</span>
-						</div>
-						<div class="h-2 bg-gray-100 rounded-full overflow-hidden">
-							<div class="h-full bg-gray-400 rounded-full" style="width: {stats.whiteStats.winRate}%"></div>
-						</div>
-					</div>
-				</div>
+				{:else}
+					<p class="text-gray-400 text-sm">No matches yet</p>
+				{/each}
 			</div>
-		</div>
-
-		<!-- Partner/Opponent stats -->
-		<div class="grid md:grid-cols-2 gap-4">
-			{#if stats.bestPartner}
-				<div class="bg-white rounded-xl shadow-sm p-4">
-					<h2 class="font-semibold text-gray-900 mb-2">Best Partner</h2>
-					<p class="text-lg font-medium">{stats.bestPartner.displayName}</p>
-					<p class="text-sm text-gray-500">{stats.bestPartner.winRate}% win rate ({stats.bestPartner.matches} matches)</p>
-				</div>
-			{/if}
-			{#if stats.nemesis}
-				<div class="bg-white rounded-xl shadow-sm p-4">
-					<h2 class="font-semibold text-gray-900 mb-2">Nemesis</h2>
-					<p class="text-lg font-medium">{stats.nemesis.displayName}</p>
-					<p class="text-sm text-gray-500">{stats.nemesis.lossRate}% loss rate ({stats.nemesis.matches} matches)</p>
-				</div>
-			{/if}
 		</div>
 	</div>
 {/if}

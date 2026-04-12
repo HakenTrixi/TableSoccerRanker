@@ -9,7 +9,7 @@
 	let isAuthPage = $derived($page.url.pathname.startsWith('/auth'));
 </script>
 
-<div class="min-h-screen bg-gray-50 flex flex-col">
+<div class="min-h-screen bg-brand-light-gray flex flex-col">
 	{#if !isAuthPage}
 		<Navbar />
 	{/if}

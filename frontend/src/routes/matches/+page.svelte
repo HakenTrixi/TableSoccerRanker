@@ -183,8 +183,8 @@
 
 <div class="space-y-4">
 	<div class="flex items-center justify-between">
-		<h1 class="text-2xl font-bold text-gray-900">Match History</h1>
-		<a href="/next-match" class="px-4 py-2 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700">
+		<h1 class="text-2xl font-black text-gray-900 brand-heading">Match History</h1>
+		<a href="/next-match" class="px-4 py-2 bg-brand-blue text-white rounded-xl text-sm font-semibold hover:bg-brand-blue/90">
 			New Match
 		</a>
 	</div>
@@ -195,13 +195,13 @@
 		<div class="bg-red-50 text-red-700 rounded-lg p-4 text-sm">{loadError}</div>
 	{:else}
 		<!-- Filter/Sort bar -->
-		<div class="bg-white rounded-xl shadow-sm p-3 space-y-3">
+		<div class="bg-white rounded-xl border border-brand-cloud-blue p-3 space-y-3">
 			<div class="flex items-center gap-3 flex-wrap">
 				<!-- Sort -->
 				<div class="flex items-center gap-1.5">
 					<span class="text-xs text-gray-500">Sort:</span>
 					<select bind:value={sortKey}
-						class="text-sm border border-gray-200 rounded-lg px-2 py-1.5 bg-white text-gray-700">
+						class="text-sm border border-brand-gray rounded-lg px-2 py-1.5 bg-white text-gray-700">
 						{#each Object.entries(sortLabels) as [key, label]}
 							<option value={key}>{label}</option>
 						{/each}
@@ -212,7 +212,7 @@
 				<button
 					onclick={() => filtersOpen = !filtersOpen}
 					class="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg border transition-colors
-						{hasActiveFilters ? 'border-blue-300 bg-blue-50 text-blue-700' : 'border-gray-200 text-gray-600 hover:bg-gray-50'}"
+						{hasActiveFilters ? 'border-brand-it-blue bg-brand-cloud-blue text-brand-blue' : 'border-brand-gray text-gray-600 hover:bg-brand-cloud-blue'}"
 				>
 					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -220,7 +220,7 @@
 					</svg>
 					Filters
 					{#if hasActiveFilters}
-						<span class="w-2 h-2 rounded-full bg-blue-500"></span>
+						<span class="w-2 h-2 rounded-full bg-brand-blue"></span>
 					{/if}
 				</button>
 
@@ -239,12 +239,12 @@
 
 			<!-- Expandable filters -->
 			{#if filtersOpen}
-				<div class="border-t border-gray-100 pt-3 grid grid-cols-2 md:grid-cols-3 gap-3">
+				<div class="border-t border-brand-cloud-blue pt-3 grid grid-cols-2 md:grid-cols-3 gap-3">
 					<!-- Player -->
 					<div>
 						<label class="text-[11px] font-medium text-gray-500 uppercase mb-1 block">Player</label>
 						<select bind:value={filterPlayer}
-							class="w-full text-sm border border-gray-200 rounded-lg px-2 py-1.5 bg-white">
+							class="w-full text-sm border border-brand-gray rounded-lg px-2 py-1.5 bg-white">
 							<option value="">All players</option>
 							{#each users as u}
 								<option value={u.id}>{u.displayName}</option>
@@ -256,7 +256,7 @@
 					<div>
 						<label class="text-[11px] font-medium text-gray-500 uppercase mb-1 block">Position</label>
 						<select bind:value={filterPosition} disabled={!filterPlayer}
-							class="w-full text-sm border border-gray-200 rounded-lg px-2 py-1.5 bg-white disabled:opacity-40">
+							class="w-full text-sm border border-brand-gray rounded-lg px-2 py-1.5 bg-white disabled:opacity-40">
 							<option value="">Any</option>
 							<option value="ATTACKER">Attacker</option>
 							<option value="DEFENDER">Defender</option>
@@ -267,7 +267,7 @@
 					<div>
 						<label class="text-[11px] font-medium text-gray-500 uppercase mb-1 block">Teammate</label>
 						<select bind:value={filterTeammate} disabled={!filterPlayer}
-							class="w-full text-sm border border-gray-200 rounded-lg px-2 py-1.5 bg-white disabled:opacity-40">
+							class="w-full text-sm border border-brand-gray rounded-lg px-2 py-1.5 bg-white disabled:opacity-40">
 							<option value="">Any</option>
 							{#each availableTeammates() as u}
 								<option value={u.id}>{u.displayName}</option>
@@ -280,9 +280,9 @@
 						<label class="text-[11px] font-medium text-gray-500 uppercase mb-1 block">ELO Change</label>
 						<div class="flex gap-1.5">
 							<input type="number" bind:value={filterMinElo} placeholder="Min"
-								class="w-full text-sm border border-gray-200 rounded-lg px-2 py-1.5" />
+								class="w-full text-sm border border-brand-gray rounded-lg px-2 py-1.5" />
 							<input type="number" bind:value={filterMaxElo} placeholder="Max"
-								class="w-full text-sm border border-gray-200 rounded-lg px-2 py-1.5" />
+								class="w-full text-sm border border-brand-gray rounded-lg px-2 py-1.5" />
 						</div>
 					</div>
 
@@ -291,9 +291,9 @@
 						<label class="text-[11px] font-medium text-gray-500 uppercase mb-1 block">Win Prob. %</label>
 						<div class="flex gap-1.5">
 							<input type="number" bind:value={filterMinProb} placeholder="Min" min="0" max="100"
-								class="w-full text-sm border border-gray-200 rounded-lg px-2 py-1.5" />
+								class="w-full text-sm border border-brand-gray rounded-lg px-2 py-1.5" />
 							<input type="number" bind:value={filterMaxProb} placeholder="Max" min="0" max="100"
-								class="w-full text-sm border border-gray-200 rounded-lg px-2 py-1.5" />
+								class="w-full text-sm border border-brand-gray rounded-lg px-2 py-1.5" />
 						</div>
 					</div>
 				</div>
@@ -302,10 +302,12 @@
 
 		<!-- Match list -->
 		<div class="space-y-3">
-			{#each pagedMatches() as match}
-				<MatchCard {match} highlightPlayer={filterPlayer || undefined} />
+			{#each pagedMatches() as match, i}
+				<div class="animate-fade-in-up" style="--delay: {i * 60}ms">
+					<MatchCard {match} highlightPlayer={filterPlayer || undefined} />
+				</div>
 			{:else}
-				<div class="bg-white rounded-xl shadow-sm p-12 text-center text-gray-500">
+				<div class="bg-white rounded-2xl border border-brand-cloud-blue p-12 text-center text-gray-500">
 					{hasActiveFilters ? 'No matches match your filters' : 'No matches recorded yet'}
 				</div>
 			{/each}
@@ -315,14 +317,14 @@
 		{#if totalPages > 1}
 			<div class="flex justify-center gap-2 pt-4">
 				<button onclick={() => pageNum = Math.max(0, pageNum - 1)} disabled={pageNum === 0}
-					class="px-3 py-2 rounded-lg border border-gray-300 text-sm disabled:opacity-50 hover:bg-gray-50">
+					class="px-3 py-2 rounded-lg border border-brand-gray text-sm disabled:opacity-50 hover:bg-brand-cloud-blue">
 					Previous
 				</button>
 				<span class="px-3 py-2 text-sm text-gray-600">
 					{pageNum + 1} / {totalPages}
 				</span>
 				<button onclick={() => pageNum = Math.min(totalPages - 1, pageNum + 1)} disabled={pageNum >= totalPages - 1}
-					class="px-3 py-2 rounded-lg border border-gray-300 text-sm disabled:opacity-50 hover:bg-gray-50">
+					class="px-3 py-2 rounded-lg border border-brand-gray text-sm disabled:opacity-50 hover:bg-brand-cloud-blue">
 					Next
 				</button>
 			</div>

@@ -47,21 +47,26 @@
 </script>
 
 <div class="flex items-center justify-center min-h-[60vh]">
-	<div class="bg-white rounded-2xl shadow-lg p-8 max-w-sm w-full">
+	<div class="bg-white rounded-2xl shadow-lg border border-brand-cloud-blue p-8 max-w-sm w-full animate-fade-in-up">
 		<div class="text-center mb-6">
-			<div class="text-5xl mb-4">&#9917;</div>
-			<h1 class="text-2xl font-bold text-gray-900 mb-1">Table Soccer Ranker</h1>
-			<p class="text-gray-500 text-sm">Sign in to track your matches</p>
+			<!-- Brand mark -->
+			<div class="flex items-center justify-center gap-1 mb-3">
+				<span class="text-brand-yellow text-5xl font-black">{"{"}</span>
+				<span class="text-brand-blue text-4xl font-black">TS</span>
+				<span class="text-brand-yellow text-5xl font-black">{"}"}</span>
+			</div>
+			<h1 class="text-2xl font-black text-gray-900 mb-1">Table Soccer Ranker</h1>
+			<p class="text-brand-blue/60 text-sm font-semibold">by Trixi Software</p>
 		</div>
 
 		{#if error}
-			<div class="bg-red-50 text-red-700 rounded-lg p-3 mb-4 text-sm">
+			<div class="bg-red-50 text-red-700 rounded-lg p-3 mb-4 text-sm border border-red-100">
 				Login failed. Only @trixi.cz accounts are allowed.
 			</div>
 		{/if}
 
 		{#if formError}
-			<div class="bg-red-50 text-red-700 rounded-lg p-3 mb-4 text-sm">
+			<div class="bg-red-50 text-red-700 rounded-lg p-3 mb-4 text-sm border border-red-100">
 				{formError}
 			</div>
 		{/if}
@@ -74,7 +79,7 @@
 					bind:value={username}
 					placeholder="Username"
 					required
-					class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+					class="w-full px-4 py-3 border border-brand-gray rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent transition-shadow"
 				/>
 				{#if mode === 'register'}
 					<input
@@ -82,7 +87,7 @@
 						bind:value={displayName}
 						placeholder="Display Name"
 						required
-						class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+						class="w-full px-4 py-3 border border-brand-gray rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent transition-shadow"
 					/>
 				{/if}
 				<input
@@ -91,12 +96,12 @@
 					placeholder="Password"
 					required
 					minlength={mode === 'register' ? 6 : undefined}
-					class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+					class="w-full px-4 py-3 border border-brand-gray rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent transition-shadow"
 				/>
 				<button
 					type="submit"
 					disabled={loading}
-					class="w-full py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 disabled:bg-gray-300 transition-colors"
+					class="w-full py-3 bg-brand-blue text-white rounded-xl font-bold hover:bg-brand-blue/90 disabled:bg-brand-gray transition-colors"
 				>
 					{loading ? '...' : mode === 'login' ? 'Sign In' : 'Create Account'}
 				</button>
@@ -105,22 +110,22 @@
 
 		<button
 			onclick={() => { mode = mode === 'login' ? 'register' : 'login'; formError = null; }}
-			class="w-full text-center text-sm text-blue-600 hover:text-blue-700 mt-3"
+			class="w-full text-center text-sm text-brand-blue hover:text-brand-it-blue font-semibold mt-3 transition-colors"
 		>
 			{mode === 'login' ? "Don't have an account? Register" : 'Already have an account? Sign In'}
 		</button>
 
 		<!-- Divider -->
 		<div class="flex items-center gap-3 my-5">
-			<div class="flex-1 h-px bg-gray-200"></div>
-			<span class="text-xs text-gray-400">OR</span>
-			<div class="flex-1 h-px bg-gray-200"></div>
+			<div class="flex-1 h-px bg-brand-gray"></div>
+			<span class="text-xs text-gray-400 font-semibold">OR</span>
+			<div class="flex-1 h-px bg-brand-gray"></div>
 		</div>
 
 		<!-- Google OAuth -->
 		<a
 			href="/oauth2/authorization/google"
-			class="inline-flex items-center gap-3 bg-white border-2 border-gray-200 rounded-xl px-6 py-3 text-gray-700 font-medium hover:bg-gray-50 hover:border-gray-300 transition-all w-full justify-center"
+			class="inline-flex items-center gap-3 bg-white border-2 border-brand-gray rounded-xl px-6 py-3 text-gray-700 font-semibold hover:bg-brand-cloud-blue hover:border-brand-it-blue transition-all w-full justify-center"
 		>
 			<svg class="w-5 h-5" viewBox="0 0 24 24">
 				<path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/>

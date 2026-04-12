@@ -7,13 +7,13 @@
 	<!-- Glow effect -->
 	<defs>
 		<linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
-			<stop offset="0%" stop-color="#fbbf24" />
-			<stop offset="50%" stop-color="#f59e0b" />
-			<stop offset="100%" stop-color="#d97706" />
+			<stop offset="0%" stop-color="#fac400" />
+			<stop offset="50%" stop-color="#e5b200" />
+			<stop offset="100%" stop-color="#c99c00" />
 		</linearGradient>
 		<linearGradient id="goldShine" x1="0" y1="0" x2="1" y2="1">
 			<stop offset="0%" stop-color="#fde68a" />
-			<stop offset="100%" stop-color="#f59e0b" />
+			<stop offset="100%" stop-color="#fac400" />
 		</linearGradient>
 		<filter id="glow">
 			<feGaussianBlur stdDeviation="1.5" result="blur" />
@@ -53,5 +53,5 @@
 
 	<!-- Star on top -->
 	<polygon points="32,2 34,8 40,8 35,12 37,18 32,14 27,18 29,12 24,8 30,8"
-		fill="#fbbf24" stroke="#b45309" stroke-width="0.8" />
+		fill="#fac400" stroke="#b45309" stroke-width="0.8" />
 </svg>

@@ -66,36 +66,36 @@
 </script>
 
 <div class="space-y-6">
-	<h1 class="text-2xl font-bold text-gray-900">Rankings</h1>
+	<h1 class="text-2xl font-black text-gray-900 brand-heading">Rankings</h1>
 
 	{#if loading}
 		<div class="text-center py-12 text-gray-400">Loading...</div>
 	{:else if error}
-		<div class="bg-red-50 text-red-700 rounded-lg p-4 text-sm">{error}</div>
+		<div class="bg-red-50 text-red-700 rounded-xl p-4 text-sm border border-red-100">{error}</div>
 	{:else}
 
 	<!-- Zlatý Bludišťák Banner -->
 	{#if companyStats?.currentBludistak}
-		<div class="bg-gradient-to-r from-amber-50 via-yellow-50 to-amber-50 border-2 border-amber-200 rounded-xl p-4 shadow-sm">
+		<div class="bg-gradient-to-r from-[#fac400]/10 via-[#fac400]/5 to-[#fac400]/10 border-2 border-[#fac400]/30 rounded-2xl p-4 animate-fade-in-up">
 			<div class="flex items-center gap-4">
 				<BludistakIcon size={56} />
 				<div class="flex-1 min-w-0">
-					<p class="text-xs font-semibold text-amber-700 uppercase tracking-wide">Zlatý Bludišťák</p>
-					<p class="text-xl font-bold text-gray-900 truncate">{companyStats.currentBludistak.displayName}</p>
-					<p class="text-sm text-amber-600">
+					<p class="text-xs font-bold text-brand-blue uppercase tracking-wide">Zlatý Bludišťák</p>
+					<p class="text-xl font-black text-gray-900 truncate">{companyStats.currentBludistak.displayName}</p>
+					<p class="text-sm text-brand-blue/70">
 						Champion since {new Date(companyStats.currentBludistak.month + '-01').toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
 					</p>
 				</div>
 				{#if companyStats.mostBludistakWins && companyStats.mostBludistakWins.userId !== companyStats.currentBludistak.userId}
 					<div class="text-right hidden sm:block">
-						<p class="text-[10px] font-semibold text-amber-600 uppercase">Most Titles</p>
-						<p class="text-sm font-bold text-gray-900">{companyStats.mostBludistakWins.displayName}</p>
-						<p class="text-xs text-amber-600">{companyStats.mostBludistakWins.wins}x winner</p>
+						<p class="text-[10px] font-bold text-brand-blue/60 uppercase">Most Titles</p>
+						<p class="text-sm font-black text-gray-900">{companyStats.mostBludistakWins.displayName}</p>
+						<p class="text-xs text-brand-blue/70">{companyStats.mostBludistakWins.wins}x winner</p>
 					</div>
 				{:else if companyStats.currentBludistak}
 					<div class="text-right hidden sm:block">
-						<p class="text-[10px] font-semibold text-amber-600 uppercase">Total Titles</p>
-						<p class="text-lg font-bold text-amber-700">{companyStats.currentBludistak.wins}x</p>
+						<p class="text-[10px] font-bold text-brand-blue/60 uppercase">Total Titles</p>
+						<p class="text-lg font-black text-brand-yellow">{companyStats.currentBludistak.wins}x</p>
 					</div>
 				{/if}
 			</div>
@@ -103,25 +103,25 @@
 	{/if}
 
 	<!-- Tab switcher -->
-	<div class="flex gap-1 bg-gray-100 rounded-xl p-1">
+	<div class="flex gap-1 bg-brand-cloud-blue rounded-xl p-1">
 		<button
 			onclick={() => activeTab = 'longterm'}
-			class="flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all
-				{activeTab === 'longterm' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}"
+			class="flex-1 py-2 px-3 rounded-lg text-sm font-bold transition-all duration-200
+				{activeTab === 'longterm' ? 'bg-brand-blue shadow-sm text-white' : 'text-brand-blue/60 hover:text-brand-blue'}"
 		>
 			Long-Term (ELO)
 		</button>
 		<button
 			onclick={() => activeTab = 'monthly'}
-			class="flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all
-				{activeTab === 'monthly' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}"
+			class="flex-1 py-2 px-3 rounded-lg text-sm font-bold transition-all duration-200
+				{activeTab === 'monthly' ? 'bg-brand-blue shadow-sm text-white' : 'text-brand-blue/60 hover:text-brand-blue'}"
 		>
 			Monthly
 		</button>
 		<button
 			onclick={() => activeTab = 'timeline'}
-			class="flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all
-				{activeTab === 'timeline' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}"
+			class="flex-1 py-2 px-3 rounded-lg text-sm font-bold transition-all duration-200
+				{activeTab === 'timeline' ? 'bg-brand-blue shadow-sm text-white' : 'text-brand-blue/60 hover:text-brand-blue'}"
 		>
 			ELO Timeline
 		</button>
@@ -134,20 +134,20 @@
 		<div class="flex items-center justify-center gap-3">
 			<button
 				onclick={() => changeMonth(-1)}
-				class="p-2 rounded-lg hover:bg-gray-100 text-gray-600 transition-colors"
+				class="p-2 rounded-lg hover:bg-brand-cloud-blue text-brand-blue/60 hover:text-brand-blue transition-colors"
 				aria-label="Previous month"
 			>
 				<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
 				</svg>
 			</button>
-			<span class="text-lg font-semibold text-gray-900 min-w-[160px] text-center">
+			<span class="text-lg font-bold text-gray-900 min-w-[160px] text-center">
 				{selectedMonthLabel()}
 			</span>
 			<button
 				onclick={() => changeMonth(1)}
 				disabled={isCurrentMonth}
-				class="p-2 rounded-lg hover:bg-gray-100 text-gray-600 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+				class="p-2 rounded-lg hover:bg-brand-cloud-blue text-brand-blue/60 hover:text-brand-blue transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
 				aria-label="Next month"
 			>
 				<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -161,8 +161,8 @@
 			<Leaderboard rankings={monthlyRankings} scoreLabel="ELO" />
 		{/if}
 	{:else}
-		<div class="bg-white rounded-xl shadow-sm p-4">
-			<h2 class="font-semibold text-gray-900 mb-4">ELO Rating Over Time</h2>
+		<div class="bg-white rounded-2xl border border-brand-cloud-blue p-4">
+			<h2 class="font-bold text-gray-900 mb-4">ELO Rating Over Time</h2>
 			<EloTimelineChart />
 		</div>
 	{/if}
@@ -171,14 +171,16 @@
 	{#if activeTab !== 'timeline'}
 		<div>
 			<div class="flex items-center justify-between mb-3">
-				<h2 class="text-lg font-semibold text-gray-900">Recent Matches</h2>
-				<a href="/matches" class="text-sm text-blue-600 hover:text-blue-700">View all</a>
+				<h2 class="text-lg font-bold text-gray-900">Recent Matches</h2>
+				<a href="/matches" class="text-sm text-brand-blue hover:text-brand-it-blue font-semibold transition-colors">View all</a>
 			</div>
 			<div class="space-y-3">
-				{#each recentMatches as match}
-					<MatchCard {match} />
+				{#each recentMatches as match, i}
+					<div class="animate-fade-in-up" style="--delay: {i * 80}ms">
+						<MatchCard {match} />
+					</div>
 				{:else}
-					<p class="text-gray-500 text-sm">No matches yet. Start playing!</p>
+					<p class="text-gray-400 text-sm">No matches yet. Start playing!</p>
 				{/each}
 			</div>
 		</div>

@@ -170,13 +170,13 @@
 	<!-- Step indicator -->
 	<div class="flex items-center gap-2">
 		{#each [1, 2, 3, 4] as s}
-			<div class="flex items-center gap-2 {s <= step ? 'text-blue-600' : 'text-gray-300'}">
-				<div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold
-					{s === step ? 'bg-blue-600 text-white' : s < step ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-400'}">
+			<div class="flex items-center gap-2 {s <= step ? 'text-brand-blue' : 'text-brand-gray'}">
+				<div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-black transition-all duration-200
+					{s === step ? 'bg-brand-blue text-white shadow-md' : s < step ? 'bg-brand-cloud-blue text-brand-blue' : 'bg-brand-light-gray text-brand-gray'}">
 					{s}
 				</div>
 				{#if s < 4}
-					<div class="w-8 h-0.5 {s < step ? 'bg-blue-600' : 'bg-gray-200'}"></div>
+					<div class="w-8 h-0.5 transition-colors duration-200 {s < step ? 'bg-brand-blue' : 'bg-brand-gray'}"></div>
 				{/if}
 			</div>
 		{/each}
@@ -184,27 +184,27 @@
 
 	<!-- Step 1: Select Players -->
 	{#if step === 1}
-		<div>
-			<h1 class="text-2xl font-bold text-gray-900 mb-1">Select 4 Players</h1>
+		<div class="animate-fade-in-up">
+			<h1 class="text-2xl font-black text-gray-900 mb-1 brand-heading">Select 4 Players</h1>
 			<p class="text-gray-500 text-sm mb-4">Choose who's playing the next match</p>
 
 			<div class="grid grid-cols-2 gap-3">
 				{#each users as user}
 					<button
 						onclick={() => togglePlayer(user.id)}
-						class="flex items-center gap-3 p-3 rounded-xl border-2 transition-all text-left
-							{selectedIds.includes(user.id) ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'}"
+						class="flex items-center gap-3 p-3 rounded-xl border-2 transition-all duration-200 text-left
+							{selectedIds.includes(user.id) ? 'border-brand-blue bg-brand-cloud-blue' : 'border-brand-gray hover:border-brand-it-blue'}"
 						disabled={selectedIds.length >= 4 && !selectedIds.includes(user.id)}
 					>
 						{#if user.avatarUrl}
 							<img src={user.avatarUrl} alt={user.displayName} class="w-10 h-10 rounded-full" />
 						{:else}
-							<div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-sm font-bold">
+							<div class="w-10 h-10 rounded-full bg-brand-cloud-blue flex items-center justify-center text-sm font-bold text-brand-blue">
 								{user.displayName?.[0] ?? '?'}
 							</div>
 						{/if}
 						<div class="min-w-0">
-							<p class="font-medium text-gray-900 truncate text-sm">{user.displayName}</p>
+							<p class="font-semibold text-gray-900 truncate text-sm">{user.displayName}</p>
 							<p class="text-xs text-gray-500">ELO {user.eloRating}</p>
 						</div>
 					</button>
@@ -214,8 +214,8 @@
 			<button
 				onclick={suggestTeams}
 				disabled={selectedIds.length !== 4}
-				class="w-full mt-4 py-3 rounded-xl font-medium text-white transition-colors
-					{selectedIds.length === 4 ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-300 cursor-not-allowed'}"
+				class="w-full mt-4 py-3 rounded-xl font-bold text-white transition-all duration-200
+					{selectedIds.length === 4 ? 'bg-brand-blue hover:bg-brand-blue/90' : 'bg-brand-gray cursor-not-allowed'}"
 			>
 				Suggest Teams ({selectedIds.length}/4)
 			</button>
@@ -224,46 +224,46 @@
 
 	<!-- Step 2: Team Suggestion -->
 	{#if step === 2}
-		<div>
-			<h1 class="text-2xl font-bold text-gray-900 mb-1">Team Suggestion</h1>
+		<div class="animate-fade-in-up">
+			<h1 class="text-2xl font-black text-gray-900 mb-1 brand-heading">Team Suggestion</h1>
 			<p class="text-gray-500 text-sm mb-4">Balanced by ranking. Tap swap to adjust.</p>
 
 			<div class="grid grid-cols-2 gap-4">
 				<!-- Yellow Team -->
-				<div class="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-4">
+				<div class="bg-[#fac400]/8 border-2 border-[#fac400]/25 rounded-xl p-4">
 					<div class="flex items-center gap-2 mb-3">
-						<div class="w-4 h-4 rounded-full bg-yellow-400"></div>
-						<span class="font-bold text-yellow-800">Yellow</span>
+						<div class="w-4 h-4 rounded-full bg-brand-yellow"></div>
+						<span class="font-black text-brand-blue">Yellow</span>
 					</div>
 					{#if yellowAttacker}
 						<div class="space-y-2">
 							<div class="bg-white rounded-lg p-2">
-								<p class="text-[10px] text-gray-400 uppercase">Attacker</p>
-								<p class="font-medium text-sm">{yellowAttacker.displayName}</p>
+								<p class="text-[10px] text-brand-blue/60 uppercase font-bold">Attacker</p>
+								<p class="font-semibold text-sm">{yellowAttacker.displayName}</p>
 							</div>
 							<div class="bg-white rounded-lg p-2">
-								<p class="text-[10px] text-gray-400 uppercase">Defender</p>
-								<p class="font-medium text-sm">{yellowDefender?.displayName}</p>
+								<p class="text-[10px] text-brand-blue/60 uppercase font-bold">Defender</p>
+								<p class="font-semibold text-sm">{yellowDefender?.displayName}</p>
 							</div>
 						</div>
 					{/if}
 				</div>
 
 				<!-- White Team -->
-				<div class="bg-gray-50 border-2 border-gray-200 rounded-xl p-4">
+				<div class="bg-brand-light-gray border-2 border-brand-gray rounded-xl p-4">
 					<div class="flex items-center gap-2 mb-3">
-						<div class="w-4 h-4 rounded-full bg-gray-300 border border-gray-400"></div>
-						<span class="font-bold text-gray-700">White</span>
+						<div class="w-4 h-4 rounded-full bg-brand-gray border border-gray-400"></div>
+						<span class="font-black text-gray-700">White</span>
 					</div>
 					{#if whiteAttacker}
 						<div class="space-y-2">
 							<div class="bg-white rounded-lg p-2">
-								<p class="text-[10px] text-gray-400 uppercase">Attacker</p>
-								<p class="font-medium text-sm">{whiteAttacker.displayName}</p>
+								<p class="text-[10px] text-gray-500 uppercase font-bold">Attacker</p>
+								<p class="font-semibold text-sm">{whiteAttacker.displayName}</p>
 							</div>
 							<div class="bg-white rounded-lg p-2">
-								<p class="text-[10px] text-gray-400 uppercase">Defender</p>
-								<p class="font-medium text-sm">{whiteDefender?.displayName}</p>
+								<p class="text-[10px] text-gray-500 uppercase font-bold">Defender</p>
+								<p class="font-semibold text-sm">{whiteDefender?.displayName}</p>
 							</div>
 						</div>
 					{/if}
@@ -271,109 +271,109 @@
 			</div>
 
 			<div class="flex gap-2 mt-4">
-				<button onclick={() => swapPlayers('ya', 'wa')} class="flex-1 py-2 rounded-lg border border-gray-300 text-sm hover:bg-gray-50">Swap Attackers</button>
-				<button onclick={() => swapPlayers('yd', 'wd')} class="flex-1 py-2 rounded-lg border border-gray-300 text-sm hover:bg-gray-50">Swap Defenders</button>
+				<button onclick={() => swapPlayers('ya', 'wa')} class="flex-1 py-2 rounded-lg border border-brand-gray text-sm font-semibold hover:bg-brand-cloud-blue hover:border-brand-it-blue transition-all">Swap Attackers</button>
+				<button onclick={() => swapPlayers('yd', 'wd')} class="flex-1 py-2 rounded-lg border border-brand-gray text-sm font-semibold hover:bg-brand-cloud-blue hover:border-brand-it-blue transition-all">Swap Defenders</button>
 			</div>
 			<div class="flex gap-2 mt-2">
-				<button onclick={() => swapPlayers('ya', 'yd')} class="flex-1 py-2 rounded-lg border border-gray-300 text-sm hover:bg-gray-50">Swap Yellow Roles</button>
-				<button onclick={() => swapPlayers('wa', 'wd')} class="flex-1 py-2 rounded-lg border border-gray-300 text-sm hover:bg-gray-50">Swap White Roles</button>
+				<button onclick={() => swapPlayers('ya', 'yd')} class="flex-1 py-2 rounded-lg border border-brand-gray text-sm font-semibold hover:bg-brand-cloud-blue hover:border-brand-it-blue transition-all">Swap Yellow Roles</button>
+				<button onclick={() => swapPlayers('wa', 'wd')} class="flex-1 py-2 rounded-lg border border-brand-gray text-sm font-semibold hover:bg-brand-cloud-blue hover:border-brand-it-blue transition-all">Swap White Roles</button>
 			</div>
 
 			<div class="flex gap-3 mt-4">
-				<button onclick={() => step = 1} class="flex-1 py-3 rounded-xl border border-gray-300 font-medium hover:bg-gray-50">Back</button>
-				<button onclick={confirmTeams} class="flex-1 py-3 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700">Confirm Teams</button>
+				<button onclick={() => step = 1} class="flex-1 py-3 rounded-xl border border-brand-gray font-bold hover:bg-brand-cloud-blue transition-colors">Back</button>
+				<button onclick={confirmTeams} class="flex-1 py-3 rounded-xl bg-brand-blue text-white font-bold hover:bg-brand-blue/90 transition-colors">Confirm Teams</button>
 			</div>
 		</div>
 	{/if}
 
 	<!-- Step 3: Play -->
 	{#if step === 3}
-		<div class="text-center">
-			<h1 class="text-2xl font-bold text-gray-900 mb-2">Match In Progress</h1>
+		<div class="text-center animate-fade-in-up">
+			<h1 class="text-2xl font-black text-gray-900 mb-2 brand-heading">Match In Progress</h1>
 			<p class="text-gray-500 mb-6">Good luck! Record the score when the match is over.</p>
 
 			<div class="grid grid-cols-2 gap-4 mb-4">
-				<div class="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-4">
-					<div class="w-4 h-4 rounded-full bg-yellow-400 mx-auto mb-2"></div>
-					<p class="font-medium text-sm">{yellowAttacker?.displayName}</p>
-					<p class="font-medium text-sm">{yellowDefender?.displayName}</p>
+				<div class="bg-[#fac400]/8 border-2 border-[#fac400]/25 rounded-xl p-4">
+					<div class="w-4 h-4 rounded-full bg-brand-yellow mx-auto mb-2"></div>
+					<p class="font-semibold text-sm">{yellowAttacker?.displayName}</p>
+					<p class="font-semibold text-sm">{yellowDefender?.displayName}</p>
 				</div>
-				<div class="bg-gray-50 border-2 border-gray-200 rounded-xl p-4">
-					<div class="w-4 h-4 rounded-full bg-gray-300 border border-gray-400 mx-auto mb-2"></div>
-					<p class="font-medium text-sm">{whiteAttacker?.displayName}</p>
-					<p class="font-medium text-sm">{whiteDefender?.displayName}</p>
+				<div class="bg-brand-light-gray border-2 border-brand-gray rounded-xl p-4">
+					<div class="w-4 h-4 rounded-full bg-brand-gray border border-gray-400 mx-auto mb-2"></div>
+					<p class="font-semibold text-sm">{whiteAttacker?.displayName}</p>
+					<p class="font-semibold text-sm">{whiteDefender?.displayName}</p>
 				</div>
 			</div>
 
 			<!-- Win probability -->
 			{#if yellowProb != null && whiteProb != null}
-				<div class="bg-white rounded-xl shadow-sm p-4 mb-6">
-					<p class="text-xs text-gray-500 mb-2 uppercase font-semibold">Win Probability</p>
+				<div class="bg-white rounded-2xl border border-brand-cloud-blue p-4 mb-6">
+					<p class="text-xs text-brand-blue/60 mb-2 uppercase font-bold">Win Probability</p>
 					<div class="flex items-center gap-3">
-						<span class="text-lg font-bold text-yellow-700 w-16 text-right">{yellowProb.toFixed(1)}%</span>
-						<div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden flex">
-							<div class="bg-yellow-400 h-full transition-all" style="width: {yellowProb}%"></div>
-							<div class="bg-gray-400 h-full transition-all" style="width: {whiteProb}%"></div>
+						<span class="text-lg font-black text-brand-blue w-16 text-right">{yellowProb.toFixed(1)}%</span>
+						<div class="flex-1 h-3 bg-brand-light-gray rounded-full overflow-hidden flex">
+							<div class="bg-brand-yellow h-full transition-all animate-fill-bar rounded-l-full" style="width: {yellowProb}%"></div>
+							<div class="bg-brand-gray h-full transition-all animate-fill-bar rounded-r-full" style="width: {whiteProb}%"></div>
 						</div>
-						<span class="text-lg font-bold text-gray-600 w-16">{whiteProb.toFixed(1)}%</span>
+						<span class="text-lg font-black text-gray-500 w-16">{whiteProb.toFixed(1)}%</span>
 					</div>
 				</div>
 			{/if}
 
 			<div class="flex gap-3">
-				<button onclick={() => step = 2} class="flex-1 py-3 rounded-xl border border-gray-300 font-medium hover:bg-gray-50">Back</button>
-				<button onclick={startScoring} class="flex-1 py-3 rounded-xl bg-green-600 text-white font-medium hover:bg-green-700">Enter Score</button>
+				<button onclick={() => step = 2} class="flex-1 py-3 rounded-xl border border-brand-gray font-bold hover:bg-brand-cloud-blue transition-colors">Back</button>
+				<button onclick={startScoring} class="flex-1 py-3 rounded-xl bg-green-600 text-white font-bold hover:bg-green-700 transition-colors">Enter Score</button>
 			</div>
 		</div>
 	{/if}
 
 	<!-- Step 4: Record Score -->
 	{#if step === 4}
-		<div>
-			<h1 class="text-2xl font-bold text-gray-900 mb-4 text-center">Record Score</h1>
+		<div class="animate-fade-in-up">
+			<h1 class="text-2xl font-black text-gray-900 mb-4 text-center brand-heading">Record Score</h1>
 
 			<!-- Quick score buttons -->
 			<div class="flex justify-center gap-2 mb-4">
-				<button onclick={() => setScore(10, 0)} class="px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-medium hover:bg-gray-50">10:0</button>
-				<button onclick={() => setScore(10, 5)} class="px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-medium hover:bg-gray-50">10:5</button>
-				<button onclick={() => setScore(10, 8)} class="px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-medium hover:bg-gray-50">10:8</button>
-				<button onclick={() => setScore(10, 9)} class="px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-medium hover:bg-gray-50">10:9</button>
-				<button onclick={() => setScore(5, 10)} class="px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-medium hover:bg-gray-50">5:10</button>
-				<button onclick={() => setScore(0, 10)} class="px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-medium hover:bg-gray-50">0:10</button>
+				<button onclick={() => setScore(10, 0)} class="px-3 py-1.5 rounded-lg border border-brand-gray text-xs font-bold hover:bg-brand-cloud-blue hover:border-brand-it-blue transition-all">10:0</button>
+				<button onclick={() => setScore(10, 5)} class="px-3 py-1.5 rounded-lg border border-brand-gray text-xs font-bold hover:bg-brand-cloud-blue hover:border-brand-it-blue transition-all">10:5</button>
+				<button onclick={() => setScore(10, 8)} class="px-3 py-1.5 rounded-lg border border-brand-gray text-xs font-bold hover:bg-brand-cloud-blue hover:border-brand-it-blue transition-all">10:8</button>
+				<button onclick={() => setScore(10, 9)} class="px-3 py-1.5 rounded-lg border border-brand-gray text-xs font-bold hover:bg-brand-cloud-blue hover:border-brand-it-blue transition-all">10:9</button>
+				<button onclick={() => setScore(5, 10)} class="px-3 py-1.5 rounded-lg border border-brand-gray text-xs font-bold hover:bg-brand-cloud-blue hover:border-brand-it-blue transition-all">5:10</button>
+				<button onclick={() => setScore(0, 10)} class="px-3 py-1.5 rounded-lg border border-brand-gray text-xs font-bold hover:bg-brand-cloud-blue hover:border-brand-it-blue transition-all">0:10</button>
 			</div>
 
 			<div class="grid grid-cols-2 gap-6">
 				<!-- Yellow score -->
 				<div class="text-center">
 					<div class="flex items-center gap-2 justify-center mb-1">
-						<div class="w-4 h-4 rounded-full bg-yellow-400"></div>
-						<span class="font-bold text-yellow-800">Yellow</span>
+						<div class="w-4 h-4 rounded-full bg-brand-yellow"></div>
+						<span class="font-black text-brand-blue">Yellow</span>
 					</div>
 					<p class="text-xs text-gray-600 truncate">{yellowAttacker?.displayName}</p>
 					<p class="text-xs text-gray-600 truncate mb-2">{yellowDefender?.displayName}</p>
 					<div class="flex items-center justify-center gap-3">
 						<button onclick={() => changeYellow(-1)}
-							class="w-12 h-12 rounded-full bg-gray-100 text-2xl font-bold hover:bg-gray-200 flex items-center justify-center">-</button>
-						<span class="text-5xl font-bold tabular-nums w-16 text-center">{yellowScore}</span>
+							class="w-12 h-12 rounded-full bg-brand-cloud-blue text-2xl font-black hover:bg-[#90d4f9] active:scale-95 transition-all flex items-center justify-center">-</button>
+						<span class="text-5xl font-black tabular-nums w-16 text-center">{yellowScore}</span>
 						<button onclick={() => changeYellow(1)}
-							class="w-12 h-12 rounded-full bg-gray-100 text-2xl font-bold hover:bg-gray-200 flex items-center justify-center">+</button>
+							class="w-12 h-12 rounded-full bg-brand-cloud-blue text-2xl font-black hover:bg-[#90d4f9] active:scale-95 transition-all flex items-center justify-center">+</button>
 					</div>
 				</div>
 
 				<!-- White score -->
 				<div class="text-center">
 					<div class="flex items-center gap-2 justify-center mb-1">
-						<div class="w-4 h-4 rounded-full bg-gray-300 border border-gray-400"></div>
-						<span class="font-bold text-gray-700">White</span>
+						<div class="w-4 h-4 rounded-full bg-brand-gray border border-gray-400"></div>
+						<span class="font-black text-gray-700">White</span>
 					</div>
 					<p class="text-xs text-gray-600 truncate">{whiteAttacker?.displayName}</p>
 					<p class="text-xs text-gray-600 truncate mb-2">{whiteDefender?.displayName}</p>
 					<div class="flex items-center justify-center gap-3">
 						<button onclick={() => changeWhite(-1)}
-							class="w-12 h-12 rounded-full bg-gray-100 text-2xl font-bold hover:bg-gray-200 flex items-center justify-center">-</button>
-						<span class="text-5xl font-bold tabular-nums w-16 text-center">{whiteScore}</span>
+							class="w-12 h-12 rounded-full bg-brand-cloud-blue text-2xl font-black hover:bg-[#90d4f9] active:scale-95 transition-all flex items-center justify-center">-</button>
+						<span class="text-5xl font-black tabular-nums w-16 text-center">{whiteScore}</span>
 						<button onclick={() => changeWhite(1)}
-							class="w-12 h-12 rounded-full bg-gray-100 text-2xl font-bold hover:bg-gray-200 flex items-center justify-center">+</button>
+							class="w-12 h-12 rounded-full bg-brand-cloud-blue text-2xl font-black hover:bg-[#90d4f9] active:scale-95 transition-all flex items-center justify-center">+</button>
 					</div>
 				</div>
 			</div>
@@ -386,15 +386,15 @@
 				{@const yDef = getPreviewPlayer('YELLOW', 'DEFENDER')}
 				{@const wAtt = getPreviewPlayer('WHITE', 'ATTACKER')}
 				{@const wDef = getPreviewPlayer('WHITE', 'DEFENDER')}
-				<div class="mt-4 bg-gray-50 rounded-xl p-3 border border-gray-100">
-					<p class="text-[10px] text-gray-500 uppercase font-semibold text-center mb-2">ELO Preview</p>
+				<div class="mt-4 bg-brand-light-gray rounded-xl p-3 border border-brand-cloud-blue animate-fade-in-up">
+					<p class="text-[10px] text-brand-blue/60 uppercase font-bold text-center mb-2">ELO Preview</p>
 					<div class="grid grid-cols-2 gap-4 text-sm">
 						<div class="space-y-1">
 							{#each [yAtt, yDef] as p}
 								{#if p}
 									<div class="flex items-center justify-between">
 										<span class="text-gray-700 truncate">{p.displayName}</span>
-										<span class="font-mono font-bold {(p.eloChange ?? 0) >= 0 ? 'text-green-600' : 'text-red-500'}">
+										<span class="font-mono font-black {(p.eloChange ?? 0) >= 0 ? 'text-green-600' : 'text-red-500'}">
 											{(p.eloChange ?? 0) >= 0 ? '+' : ''}{p.eloChange}
 										</span>
 									</div>
@@ -406,7 +406,7 @@
 								{#if p}
 									<div class="flex items-center justify-between">
 										<span class="text-gray-700 truncate">{p.displayName}</span>
-										<span class="font-mono font-bold {(p.eloChange ?? 0) >= 0 ? 'text-green-600' : 'text-red-500'}">
+										<span class="font-mono font-black {(p.eloChange ?? 0) >= 0 ? 'text-green-600' : 'text-red-500'}">
 											{(p.eloChange ?? 0) >= 0 ? '+' : ''}{p.eloChange}
 										</span>
 									</div>
@@ -415,17 +415,22 @@
 						</div>
 					</div>
 					{#if yAtt?.winProbability != null}
-						<p class="text-[10px] text-gray-400 text-center mt-2">
-							P: {yAtt.winProbability.toFixed(1)}% - {wAtt?.winProbability?.toFixed(1)}%
-						</p>
+						<div class="flex items-center gap-2 mt-2">
+							<span class="text-[10px] font-semibold text-brand-blue/70 tabular-nums">{yAtt.winProbability.toFixed(1)}%</span>
+							<div class="flex-1 h-1.5 rounded-full overflow-hidden flex bg-brand-light-gray">
+								<div class="bg-brand-yellow h-full rounded-l-full" style="width: {yAtt.winProbability}%"></div>
+								<div class="bg-brand-gray h-full rounded-r-full" style="width: {wAtt?.winProbability ?? 0}%"></div>
+							</div>
+							<span class="text-[10px] font-semibold text-gray-400 tabular-nums">{wAtt?.winProbability?.toFixed(1)}%</span>
+						</div>
 					{/if}
 				</div>
 			{/if}
 
 			<div class="flex gap-3 mt-6">
-				<button onclick={() => step = 3} class="flex-1 py-3 rounded-xl border border-gray-300 font-medium hover:bg-gray-50">Back</button>
+				<button onclick={() => step = 3} class="flex-1 py-3 rounded-xl border border-brand-gray font-bold hover:bg-brand-cloud-blue transition-colors">Back</button>
 				<button onclick={saveMatch} disabled={saving || !hasValidScore}
-					class="flex-1 py-3 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 disabled:bg-gray-300">
+					class="flex-1 py-3 rounded-xl bg-brand-blue text-white font-bold hover:bg-brand-blue/90 disabled:bg-brand-gray transition-colors">
 					{saving ? 'Saving...' : 'Save Match'}
 				</button>
 			</div>

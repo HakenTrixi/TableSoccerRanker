@@ -62,31 +62,31 @@
 </script>
 
 <div class="space-y-6">
-	<h1 class="text-2xl font-bold text-gray-900">Admin Panel</h1>
+	<h1 class="text-2xl font-black text-gray-900 brand-heading">Admin Panel</h1>
 
 	{#if loadError}
-		<div class="bg-red-50 text-red-700 rounded-lg p-4 text-sm">{loadError}</div>
+		<div class="bg-red-50 text-red-700 rounded-lg p-4 text-sm border border-red-100">{loadError}</div>
 	{/if}
 
 	<!-- Algorithm Settings -->
-	<div class="bg-white rounded-xl shadow-sm p-4">
-		<h2 class="font-semibold text-gray-900 mb-4">Ranking Algorithms</h2>
+	<div class="bg-white rounded-2xl border border-brand-cloud-blue p-4 animate-fade-in-up">
+		<h2 class="font-bold text-gray-900 mb-4">Ranking Algorithms</h2>
 
 		<div class="space-y-4">
 			<div>
-				<label class="text-sm font-medium text-gray-700 mb-2 block">Long-Term Ranking</label>
+				<label class="text-sm font-semibold text-gray-700 mb-2 block">Long-Term Ranking</label>
 				<div class="flex gap-2">
 					<button
 						onclick={() => updateLongTermAlgorithm('ELO')}
-						class="flex-1 py-2 px-3 rounded-lg text-sm font-medium border-2 transition-all
-							{settings.long_term_algorithm === 'ELO' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-200 hover:border-gray-300'}"
+						class="flex-1 py-2 px-3 rounded-lg text-sm font-bold border-2 transition-all
+							{settings.long_term_algorithm === 'ELO' ? 'border-brand-blue bg-brand-cloud-blue text-brand-blue' : 'border-brand-gray hover:border-brand-it-blue'}"
 					>
 						ELO
 					</button>
 					<button
 						onclick={() => updateLongTermAlgorithm('AVG_GOAL_DIFF')}
-						class="flex-1 py-2 px-3 rounded-lg text-sm font-medium border-2 transition-all
-							{settings.long_term_algorithm === 'AVG_GOAL_DIFF' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-200 hover:border-gray-300'}"
+						class="flex-1 py-2 px-3 rounded-lg text-sm font-bold border-2 transition-all
+							{settings.long_term_algorithm === 'AVG_GOAL_DIFF' ? 'border-brand-blue bg-brand-cloud-blue text-brand-blue' : 'border-brand-gray hover:border-brand-it-blue'}"
 					>
 						Avg Goal Difference
 					</button>
@@ -94,19 +94,19 @@
 			</div>
 
 			<div>
-				<label class="text-sm font-medium text-gray-700 mb-2 block">Monthly Competition</label>
+				<label class="text-sm font-semibold text-gray-700 mb-2 block">Monthly Competition</label>
 				<div class="flex gap-2">
 					<button
 						onclick={() => updateMonthlyAlgorithm('MONTHLY_ELO_GAIN')}
-						class="flex-1 py-2 px-3 rounded-lg text-sm font-medium border-2 transition-all
-							{settings.monthly_algorithm === 'MONTHLY_ELO_GAIN' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-200 hover:border-gray-300'}"
+						class="flex-1 py-2 px-3 rounded-lg text-sm font-bold border-2 transition-all
+							{settings.monthly_algorithm === 'MONTHLY_ELO_GAIN' ? 'border-brand-blue bg-brand-cloud-blue text-brand-blue' : 'border-brand-gray hover:border-brand-it-blue'}"
 					>
 						ELO Gain
 					</button>
 					<button
 						onclick={() => updateMonthlyAlgorithm('MONTHLY_GOALS_SCORED')}
-						class="flex-1 py-2 px-3 rounded-lg text-sm font-medium border-2 transition-all
-							{settings.monthly_algorithm === 'MONTHLY_GOALS_SCORED' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-200 hover:border-gray-300'}"
+						class="flex-1 py-2 px-3 rounded-lg text-sm font-bold border-2 transition-all
+							{settings.monthly_algorithm === 'MONTHLY_GOALS_SCORED' ? 'border-brand-blue bg-brand-cloud-blue text-brand-blue' : 'border-brand-gray hover:border-brand-it-blue'}"
 					>
 						Goals Scored
 					</button>
@@ -116,31 +116,31 @@
 	</div>
 
 	<!-- Recalculate -->
-	<div class="bg-white rounded-xl shadow-sm p-4">
-		<h2 class="font-semibold text-gray-900 mb-2">Recalculate Rankings</h2>
+	<div class="bg-white rounded-2xl border border-brand-cloud-blue p-4 animate-fade-in-up" style="--delay: 60ms">
+		<h2 class="font-bold text-gray-900 mb-2">Recalculate Rankings</h2>
 		<p class="text-sm text-gray-500 mb-3">Replay all matches through the current algorithm.</p>
 		<button onclick={recalculate} disabled={recalculating}
-			class="px-4 py-2 bg-orange-600 text-white rounded-lg text-sm font-medium hover:bg-orange-700 disabled:bg-gray-300">
+			class="px-4 py-2 bg-orange-600 text-white rounded-lg text-sm font-bold hover:bg-orange-700 disabled:bg-brand-gray transition-colors">
 			{recalculating ? 'Recalculating...' : 'Recalculate All'}
 		</button>
 	</div>
 
 	<!-- Import -->
-	<div class="bg-white rounded-xl shadow-sm p-4">
-		<h2 class="font-semibold text-gray-900 mb-2">Import Matches</h2>
+	<div class="bg-white rounded-2xl border border-brand-cloud-blue p-4 animate-fade-in-up" style="--delay: 120ms">
+		<h2 class="font-bold text-gray-900 mb-2">Import Matches</h2>
 		<p class="text-sm text-gray-500 mb-1">
 			<strong>CSV:</strong> datum, zluty_obrance, zluty_utocnik, bily_obrance, bily_utocnik, skore_zluty, skore_bily
 		</p>
 		<p class="text-sm text-gray-500 mb-3">
 			<strong>Excel:</strong> Date | Yellow Attacker | Yellow Defender | White Attacker | White Defender | Yellow Score | White Score
 		</p>
-		<label class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 cursor-pointer">
+		<label class="inline-flex items-center gap-2 px-4 py-2 bg-brand-blue text-white rounded-lg text-sm font-bold hover:bg-brand-blue/90 cursor-pointer transition-colors">
 			{importing ? 'Importing...' : 'Upload File'}
 			<input type="file" accept=".xlsx,.xls,.csv,.txt" onchange={handleImport} class="hidden" disabled={importing} />
 		</label>
 		{#if importResult}
-			<div class="mt-3 p-3 rounded-lg {importResult.errors.length > 0 ? 'bg-yellow-50' : 'bg-green-50'}">
-				<p class="text-sm font-medium">
+			<div class="mt-3 p-3 rounded-lg border {importResult.errors.length > 0 ? 'bg-yellow-50 border-yellow-200' : 'bg-green-50 border-green-200'}">
+				<p class="text-sm font-bold">
 					Imported: {importResult.imported} | Skipped: {importResult.skipped}
 				</p>
 				{#if importResult.errors.length > 0}
@@ -155,28 +155,28 @@
 	</div>
 
 	<!-- User Management -->
-	<div class="bg-white rounded-xl shadow-sm p-4">
-		<h2 class="font-semibold text-gray-900 mb-4">User Management</h2>
-		<div class="divide-y divide-gray-100">
+	<div class="bg-white rounded-2xl border border-brand-cloud-blue p-4 animate-fade-in-up" style="--delay: 180ms">
+		<h2 class="font-bold text-gray-900 mb-4">User Management</h2>
+		<div class="divide-y divide-brand-cloud-blue">
 			{#each users as user}
 				<div class="flex items-center justify-between py-3">
 					<div class="flex items-center gap-3">
 						{#if user.avatarUrl}
 							<img src={user.avatarUrl} alt={user.displayName} class="w-8 h-8 rounded-full" />
 						{:else}
-							<div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold">
+							<div class="w-8 h-8 rounded-full bg-brand-cloud-blue flex items-center justify-center text-xs font-bold text-brand-blue">
 								{user.displayName?.[0] ?? '?'}
 							</div>
 						{/if}
 						<div>
-							<p class="font-medium text-sm text-gray-900">{user.displayName}</p>
+							<p class="font-semibold text-sm text-gray-900">{user.displayName}</p>
 							<p class="text-xs text-gray-500">{user.email}</p>
 						</div>
 					</div>
 					<button
 						onclick={() => toggleRole(user)}
-						class="px-3 py-1 rounded-full text-xs font-medium
-							{user.role === 'ADMIN' ? 'bg-purple-100 text-purple-700' : 'bg-gray-100 text-gray-600'}"
+						class="px-3 py-1 rounded-full text-xs font-bold transition-colors
+							{user.role === 'ADMIN' ? 'bg-purple-100 text-purple-700' : 'bg-brand-cloud-blue text-brand-blue'}"
 					>
 						{user.role}
 					</button>

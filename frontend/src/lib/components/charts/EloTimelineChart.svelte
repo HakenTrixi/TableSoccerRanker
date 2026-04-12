@@ -3,9 +3,9 @@
 	import type { PlayerEloTimeline } from '$lib/api/types';
 
 	const colors = [
-		'#3b82f6', '#ef4444', '#22c55e', '#f59e0b', '#8b5cf6',
-		'#ec4899', '#06b6d4', '#f97316', '#14b8a6', '#a855f7',
-		'#e11d48', '#84cc16', '#0ea5e9', '#d946ef'
+		'#285694', '#ef4444', '#22c55e', '#fac400', '#8b5cf6',
+		'#ec4899', '#4595da', '#f97316', '#14b8a6', '#a855f7',
+		'#e11d48', '#84cc16', '#90d4f9', '#d946ef'
 	];
 
 	type Period = '30d' | '90d' | '365d' | 'all';
@@ -144,12 +144,12 @@
 </script>
 
 <!-- Period selector -->
-<div class="flex gap-1 mb-4 bg-gray-100 rounded-lg p-0.5">
+<div class="flex gap-1 mb-4 bg-brand-cloud-blue rounded-lg p-0.5">
 	{#each (['30d', '90d', '365d', 'all'] as const) as p}
 		<button
 			onclick={() => loadData(p)}
-			class="flex-1 py-1.5 px-2 rounded-md text-xs font-medium transition-all
-				{period === p ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}"
+			class="flex-1 py-1.5 px-2 rounded-md text-xs font-bold transition-all
+				{period === p ? 'bg-brand-blue shadow-sm text-white' : 'text-brand-blue/60 hover:text-brand-blue'}"
 		>
 			{periodLabels[p]}
 		</button>
@@ -170,7 +170,7 @@
 			<button
 				onclick={() => togglePlayer(tl.userId)}
 				class="flex items-center gap-1.5 text-xs py-0.5 px-1 rounded transition-opacity
-					{isHidden ? 'opacity-35' : 'opacity-100'} hover:bg-gray-100"
+					{isHidden ? 'opacity-35' : 'opacity-100'} hover:bg-brand-cloud-blue"
 			>
 				<div class="w-3 h-3 rounded-full shrink-0" style="background: {color}"></div>
 				<span class="font-medium {isHidden ? 'line-through text-gray-400' : 'text-gray-700'}">{tl.displayName}</span>
@@ -199,7 +199,7 @@
 			>
 				<!-- Y grid lines -->
 				{#each yGridLines() as elo}
-					<line x1={padL} y1={yPos(elo)} x2={svgW - padR} y2={yPos(elo)} stroke="#f0f0f0" stroke-width="1" />
+					<line x1={padL} y1={yPos(elo)} x2={svgW - padR} y2={yPos(elo)} stroke="#e4f5fd" stroke-width="1" />
 					<text x={padL - 6} y={yPos(elo) + 4} fill="#9ca3af" font-size="11" text-anchor="end" font-family="monospace">{elo}</text>
 				{/each}
 

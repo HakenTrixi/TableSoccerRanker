@@ -43,24 +43,24 @@
 	<div class="text-center py-12 text-gray-400">Please sign in</div>
 {:else}
 	<div class="space-y-6 max-w-lg mx-auto">
-		<h1 class="text-2xl font-bold text-gray-900">Settings</h1>
+		<h1 class="text-2xl font-black text-gray-900 brand-heading">Settings</h1>
 
 		<!-- Profile info -->
-		<div class="bg-white rounded-xl shadow-sm p-6">
-			<h2 class="font-semibold text-gray-900 mb-4">Profile</h2>
+		<div class="bg-white rounded-2xl border border-brand-cloud-blue p-6 animate-fade-in-up">
+			<h2 class="font-bold text-gray-900 mb-4">Profile</h2>
 			<div class="flex items-center gap-4">
 				{#if user.avatarUrl}
 					<img src={user.avatarUrl} alt={user.displayName} class="w-16 h-16 rounded-full" />
 				{:else}
-					<div class="w-16 h-16 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-2xl font-bold">
+					<div class="w-16 h-16 rounded-full bg-brand-cloud-blue text-brand-blue flex items-center justify-center text-2xl font-bold">
 						{user.displayName?.[0] ?? '?'}
 					</div>
 				{/if}
 				<div>
-					<p class="text-lg font-medium text-gray-900">{user.displayName}</p>
+					<p class="text-lg font-semibold text-gray-900">{user.displayName}</p>
 					<p class="text-sm text-gray-500">{user.email}</p>
-					<span class="inline-block mt-1 px-2 py-0.5 rounded-full text-xs font-medium
-						{user.role === 'ADMIN' ? 'bg-purple-100 text-purple-700' : 'bg-gray-100 text-gray-600'}">
+					<span class="inline-block mt-1 px-2 py-0.5 rounded-full text-xs font-bold
+						{user.role === 'ADMIN' ? 'bg-purple-100 text-purple-700' : 'bg-brand-cloud-blue text-brand-blue'}">
 						{user.role}
 					</span>
 				</div>
@@ -68,17 +68,17 @@
 		</div>
 
 		<!-- Change password -->
-		<div class="bg-white rounded-xl shadow-sm p-6">
-			<h2 class="font-semibold text-gray-900 mb-4">Change Password</h2>
+		<div class="bg-white rounded-2xl border border-brand-cloud-blue p-6 animate-fade-in-up" style="--delay: 80ms">
+			<h2 class="font-bold text-gray-900 mb-4">Change Password</h2>
 
 			{#if passwordSuccess}
-				<div class="bg-green-50 text-green-700 rounded-lg p-3 mb-4 text-sm">
+				<div class="bg-green-50 text-green-700 rounded-lg p-3 mb-4 text-sm border border-green-100">
 					Password changed successfully.
 				</div>
 			{/if}
 
 			{#if passwordError}
-				<div class="bg-red-50 text-red-700 rounded-lg p-3 mb-4 text-sm">
+				<div class="bg-red-50 text-red-700 rounded-lg p-3 mb-4 text-sm border border-red-100">
 					{passwordError}
 				</div>
 			{/if}
@@ -86,41 +86,41 @@
 			<form onsubmit={(e) => { e.preventDefault(); changePassword(); }}>
 				<div class="space-y-3">
 					<div>
-						<label for="current" class="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
+						<label for="current" class="block text-sm font-semibold text-gray-700 mb-1">Current Password</label>
 						<input
 							id="current"
 							type="password"
 							bind:value={currentPassword}
 							required
-							class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+							class="w-full px-4 py-3 border border-brand-gray rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent transition-shadow"
 						/>
 					</div>
 					<div>
-						<label for="new" class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+						<label for="new" class="block text-sm font-semibold text-gray-700 mb-1">New Password</label>
 						<input
 							id="new"
 							type="password"
 							bind:value={newPassword}
 							required
 							minlength="6"
-							class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+							class="w-full px-4 py-3 border border-brand-gray rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent transition-shadow"
 						/>
 					</div>
 					<div>
-						<label for="confirm" class="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
+						<label for="confirm" class="block text-sm font-semibold text-gray-700 mb-1">Confirm New Password</label>
 						<input
 							id="confirm"
 							type="password"
 							bind:value={confirmPassword}
 							required
 							minlength="6"
-							class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+							class="w-full px-4 py-3 border border-brand-gray rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent transition-shadow"
 						/>
 					</div>
 					<button
 						type="submit"
 						disabled={saving}
-						class="w-full py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 disabled:bg-gray-300 transition-colors"
+						class="w-full py-3 bg-brand-blue text-white rounded-xl font-bold hover:bg-brand-blue/90 disabled:bg-brand-gray transition-colors"
 					>
 						{saving ? 'Saving...' : 'Change Password'}
 					</button>

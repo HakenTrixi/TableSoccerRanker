@@ -28,7 +28,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-not-configured}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-not-configured}
-      FRONTEND_URL: http://localhost
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost}
       ALLOWED_DOMAIN: ${ALLOWED_DOMAIN:-trixi.cz}
     ports:
       - "8080:8080"
@@ -37,7 +37,7 @@ services:
     build: ./frontend
     container_name: tablesoccer-frontend
     environment:
-      ORIGIN: http://localhost
+      ORIGIN: ${FRONTEND_URL:-http://localhost}
       INTERNAL_API_URL: http://backend:8080
     ports:
       - "3000:3000"

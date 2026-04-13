@@ -39,7 +39,7 @@ app:
 
 server:
   port: 8080
-  forward-headers-strategy: framework
+  forward-headers-strategy: native
   tomcat:
     redirect-context-root: false
 

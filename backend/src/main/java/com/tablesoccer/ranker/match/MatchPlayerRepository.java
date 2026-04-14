@@ -10,6 +10,8 @@ public interface MatchPlayerRepository extends JpaRepository<MatchPlayer, UUID> 
 
     List<MatchPlayer> findByUserId(UUID userId);
 
+    boolean existsByUserId(UUID userId);
+
     List<MatchPlayer> findByMatchId(UUID matchId);
 
     @Query("SELECT mp FROM MatchPlayer mp JOIN FETCH mp.match m JOIN FETCH mp.user u " +

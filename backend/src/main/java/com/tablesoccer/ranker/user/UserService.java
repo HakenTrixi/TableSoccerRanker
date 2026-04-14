@@ -1,5 +1,8 @@
 package com.tablesoccer.ranker.user;
 
+import com.tablesoccer.ranker.match.MatchPlayerRepository;
+import com.tablesoccer.ranker.match.MatchRepository;
+import com.tablesoccer.ranker.ranking.EloSnapshotRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,10 +20,19 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MatchPlayerRepository matchPlayerRepository;
+    private final MatchRepository matchRepository;
+    private final EloSnapshotRepository eloSnapshotRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                       MatchPlayerRepository matchPlayerRepository,
+                       MatchRepository matchRepository,
+                       EloSnapshotRepository eloSnapshotRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.matchPlayerRepository = matchPlayerRepository;
+        this.matchRepository = matchRepository;
+        this.eloSnapshotRepository = eloSnapshotRepository;
     }
 
     public List<UserDto> findAllActive() {
@@ -100,5 +112,43 @@ public class UserService {
         User user = getUser(userId);
         user.setRole(role);
         return UserDto.from(userRepository.save(user));
+    }
+
+    @Transactional
+    public UserDto updateEmail(UUID userId, String newEmail) {
+        User user = getUser(userId);
+        userRepository.findByEmail(newEmail).ifPresent(existing -> {
+            if (!existing.getId().equals(userId)) {
+                throw new IllegalArgumentException("Email '" + newEmail + "' is already in use");
+            }
+        });
+        user.setEmail(newEmail);
+        return UserDto.from(userRepository.save(user));
+    }
+
+    @Transactional
+    public UserDto clearGoogleSub(UUID userId) {
+        User user = getUser(userId);
+        user.setGoogleSub(null);
+        return UserDto.from(userRepository.save(user));
+    }
+
+    @Transactional
+    public void deleteUser(UUID userId) {
+        User user = getUser(userId);
+        if (hasMatches(userId)) {
+            throw new IllegalStateException("Cannot delete user who has participated in or recorded matches");
+        }
+        eloSnapshotRepository.deleteByUserId(userId);
+        userRepository.delete(user);
+    }
+
+    public boolean hasMatches(UUID userId) {
+        return matchPlayerRepository.existsByUserId(userId)
+            || matchRepository.existsByRecordedById(userId);
+    }
+
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 }

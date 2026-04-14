@@ -13,4 +13,6 @@ public interface EloSnapshotRepository extends JpaRepository<EloSnapshot, UUID> 
     List<EloSnapshot> findByUserIdOrderBySnapshotDateAsc(UUID userId);
 
     List<EloSnapshot> findBySnapshotDate(LocalDate snapshotDate);
+
+    void deleteByUserId(UUID userId);
 }

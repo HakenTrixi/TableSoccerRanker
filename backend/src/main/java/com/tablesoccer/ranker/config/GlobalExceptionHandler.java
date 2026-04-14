@@ -33,6 +33,11 @@ public class GlobalExceptionHandler {
         return detail;
     }
 
+    @ExceptionHandler(IllegalStateException.class)
+    ProblemDetail handleConflict(IllegalStateException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     ProblemDetail handleDataIntegrity(DataIntegrityViolationException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT,

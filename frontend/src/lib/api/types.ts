@@ -10,6 +10,11 @@ export interface User {
 	active: boolean;
 }
 
+export interface AdminUser extends User {
+	hasGoogleLinked: boolean;
+	hasMatches: boolean;
+}
+
 export interface MatchPlayer {
 	userId: string;
 	displayName: string;

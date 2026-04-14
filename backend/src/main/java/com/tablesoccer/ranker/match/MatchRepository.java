@@ -10,6 +10,8 @@ import java.util.UUID;
 
 public interface MatchRepository extends JpaRepository<Match, UUID> {
 
+    boolean existsByRecordedById(UUID recordedById);
+
     Page<Match> findAllByOrderByPlayedAtDesc(Pageable pageable);
 
     @Query("SELECT m FROM Match m JOIN m.players mp WHERE mp.user.id = :userId ORDER BY m.playedAt DESC")

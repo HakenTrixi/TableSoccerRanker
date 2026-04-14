@@ -5,12 +5,16 @@ import com.tablesoccer.ranker.ranking.LongTermAlgorithm;
 import com.tablesoccer.ranker.ranking.MonthlyAlgorithm;
 import com.tablesoccer.ranker.user.Role;
 import com.tablesoccer.ranker.user.UserDto;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -42,9 +46,31 @@ public class AdminController {
         adminService.updateMonthlyAlgorithm(MonthlyAlgorithm.valueOf(request.algorithm()));
     }
 
+    @GetMapping("/users")
+    public List<AdminUserDto> listUsers() {
+        return adminService.getAdminUsers();
+    }
+
     @PutMapping("/users/{id}/role")
     public UserDto updateUserRole(@PathVariable UUID id, @RequestBody RoleRequest request) {
         return adminService.updateUserRole(id, Role.valueOf(request.role()));
+    }
+
+    @PutMapping("/users/{id}/email")
+    public AdminUserDto updateUserEmail(@PathVariable UUID id, @RequestBody @Valid EmailRequest request) {
+        return adminService.updateUserEmail(id, request.email());
+    }
+
+    @DeleteMapping("/users/{id}/google-sub")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void clearGoogleSub(@PathVariable UUID id) {
+        adminService.clearUserGoogleSub(id);
+    }
+
+    @DeleteMapping("/users/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUser(@PathVariable UUID id) {
+        adminService.deleteUser(id);
     }
 
     @PostMapping("/rankings/recalculate")
@@ -64,4 +90,5 @@ public class AdminController {
 
     record AlgorithmRequest(String algorithm) {}
     record RoleRequest(String role) {}
+    record EmailRequest(@NotBlank @Email String email) {}
 }

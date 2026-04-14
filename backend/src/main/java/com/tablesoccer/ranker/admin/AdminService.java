@@ -9,6 +9,7 @@ import com.tablesoccer.ranker.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -59,5 +60,30 @@ public class AdminService {
     @Transactional
     public void recalculateRankings() {
         rankingService.recalculateAllRankings();
+    }
+
+    public List<AdminUserDto> getAdminUsers() {
+        return userService.findAll().stream()
+            .map(user -> AdminUserDto.from(user, userService.hasMatches(user.getId())))
+            .toList();
+    }
+
+    @Transactional
+    public AdminUserDto updateUserEmail(UUID userId, String email) {
+        userService.updateEmail(userId, email);
+        var user = userService.getUser(userId);
+        return AdminUserDto.from(user, userService.hasMatches(userId));
+    }
+
+    @Transactional
+    public AdminUserDto clearUserGoogleSub(UUID userId) {
+        userService.clearGoogleSub(userId);
+        var user = userService.getUser(userId);
+        return AdminUserDto.from(user, userService.hasMatches(userId));
+    }
+
+    @Transactional
+    public void deleteUser(UUID userId) {
+        userService.deleteUser(userId);
     }
 }

@@ -47,10 +47,10 @@ class TeamFormationServiceTest {
             new PlayerRanking(4, worstId, "Worst", null, 900)
         ));
 
-        when(userService.findById(bestId)).thenReturn(new UserDto(bestId, "Best", "b@t.com", null, Role.PLAYER, 1500, 1500, 1500, true));
-        when(userService.findById(secondId)).thenReturn(new UserDto(secondId, "Second", "s@t.com", null, Role.PLAYER, 1300, 1300, 1300, true));
-        when(userService.findById(thirdId)).thenReturn(new UserDto(thirdId, "Third", "t@t.com", null, Role.PLAYER, 1100, 1100, 1100, true));
-        when(userService.findById(worstId)).thenReturn(new UserDto(worstId, "Worst", "w@t.com", null, Role.PLAYER, 900, 900, 900, true));
+        when(userService.findById(bestId)).thenReturn(new UserDto(bestId, "Best", "b@t.com", null, Role.PLAYER, 1500, true));
+        when(userService.findById(secondId)).thenReturn(new UserDto(secondId, "Second", "s@t.com", null, Role.PLAYER, 1300, true));
+        when(userService.findById(thirdId)).thenReturn(new UserDto(thirdId, "Third", "t@t.com", null, Role.PLAYER, 1100, true));
+        when(userService.findById(worstId)).thenReturn(new UserDto(worstId, "Worst", "w@t.com", null, Role.PLAYER, 900, true));
     }
 
     @Test

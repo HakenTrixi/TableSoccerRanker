@@ -9,8 +9,6 @@ public record UserDto(
     String avatarUrl,
     Role role,
     int eloRating,
-    int attackerElo,
-    int defenderElo,
     boolean active
 ) {
     public static UserDto from(User user) {
@@ -21,8 +19,6 @@ public record UserDto(
             user.getAvatarUrl(),
             user.getRole(),
             user.getEloRating(),
-            user.getAttackerElo(),
-            user.getDefenderElo(),
             user.isActive()
         );
     }

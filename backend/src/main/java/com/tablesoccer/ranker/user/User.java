@@ -37,12 +37,6 @@ public class User {
     @Column(name = "elo_rating", nullable = false)
     private int eloRating = 1000;
 
-    @Column(name = "attacker_elo", nullable = false)
-    private int attackerElo = 1000;
-
-    @Column(name = "defender_elo", nullable = false)
-    private int defenderElo = 1000;
-
     @Column(nullable = false)
     private boolean active = true;
 
@@ -87,12 +81,6 @@ public class User {
 
     public int getEloRating() { return eloRating; }
     public void setEloRating(int eloRating) { this.eloRating = eloRating; }
-
-    public int getAttackerElo() { return attackerElo; }
-    public void setAttackerElo(int attackerElo) { this.attackerElo = attackerElo; }
-
-    public int getDefenderElo() { return defenderElo; }
-    public void setDefenderElo(int defenderElo) { this.defenderElo = defenderElo; }
 
     public boolean isActive() { return active; }
     public void setActive(boolean active) { this.active = active; }

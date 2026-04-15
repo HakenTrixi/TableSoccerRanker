@@ -12,8 +12,6 @@ public record AdminUserDto(
     String avatarUrl,
     Role role,
     int eloRating,
-    int attackerElo,
-    int defenderElo,
     boolean active,
     boolean hasGoogleLinked,
     boolean hasMatches
@@ -26,8 +24,6 @@ public record AdminUserDto(
             user.getAvatarUrl(),
             user.getRole(),
             user.getEloRating(),
-            user.getAttackerElo(),
-            user.getDefenderElo(),
             user.isActive(),
             user.getGoogleSub() != null,
             hasMatches

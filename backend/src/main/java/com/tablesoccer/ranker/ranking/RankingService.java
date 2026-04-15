@@ -87,11 +87,7 @@ public class RankingService {
         eloSnapshotRepository.deleteAll();
 
         // Reset all ELO to default
-        players.forEach(p -> {
-            p.setEloRating(1000);
-            p.setAttackerElo(1000);
-            p.setDefenderElo(1000);
-        });
+        players.forEach(p -> p.setEloRating(1000));
         userRepository.saveAll(players);
 
         // Replay all matches — create daily snapshots after each match

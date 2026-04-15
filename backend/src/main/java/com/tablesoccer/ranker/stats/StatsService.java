@@ -330,6 +330,15 @@ public class StatsService {
         var bludistakData = computeBludistakWinners(allMatches);
         int bludistakWins = bludistakData.winsPerPlayer().getOrDefault(userId, 0);
 
+        int attackerElo = 1000;
+        int defenderElo = 1000;
+        for (Object[] row : matchPlayerRepository.sumEloChangeByUserGroupedByRole(userId)) {
+            PlayerRole role = (PlayerRole) row[0];
+            long sum = ((Number) row[1]).longValue();
+            if (role == PlayerRole.ATTACKER) attackerElo = 1000 + (int) sum;
+            else defenderElo = 1000 + (int) sum;
+        }
+
         return new PlayerStats(
             userId, user.getDisplayName(), total, wins, losses, draws,
             Math.round(winRate * 10) / 10.0,
@@ -337,8 +346,8 @@ public class StatsService {
             total > 0 ? Math.round((double) totalScored / total * 10) / 10.0 : 0,
             total > 0 ? Math.round((double) totalConceded / total * 10) / 10.0 : 0,
             user.getEloRating(),
-            user.getAttackerElo(),
-            user.getDefenderElo(),
+            attackerElo,
+            defenderElo,
             highestElo, lowestElo, biggestGain, biggestLoss,
             Math.round(avgEloChange * 100) / 100.0,
             longestWinStreak, longestLoseStreak, biggestWinStat, currentStreakInfo,

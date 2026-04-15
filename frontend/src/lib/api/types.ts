@@ -5,8 +5,6 @@ export interface User {
 	avatarUrl: string | null;
 	role: 'ADMIN' | 'PLAYER';
 	eloRating: number;
-	attackerElo: number;
-	defenderElo: number;
 	active: boolean;
 }
 

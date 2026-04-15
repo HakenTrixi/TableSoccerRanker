@@ -124,8 +124,6 @@ class BludistakWinsIntegrationTest {
         user.setUsername(name.toLowerCase() + UUID.randomUUID());
         user.setRole(Role.PLAYER);
         user.setEloRating(1000);
-        user.setAttackerElo(1000);
-        user.setDefenderElo(1000);
         return userRepository.save(user);
     }
 

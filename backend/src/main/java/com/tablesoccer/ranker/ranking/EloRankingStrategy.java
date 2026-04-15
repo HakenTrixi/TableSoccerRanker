@@ -2,7 +2,6 @@ package com.tablesoccer.ranker.ranking;
 
 import com.tablesoccer.ranker.match.Match;
 import com.tablesoccer.ranker.match.MatchPlayer;
-import com.tablesoccer.ranker.match.PlayerRole;
 import com.tablesoccer.ranker.match.TeamColor;
 import com.tablesoccer.ranker.user.User;
 import com.tablesoccer.ranker.user.UserRepository;
@@ -59,61 +58,15 @@ public final class EloRankingStrategy implements LongTermRankingStrategy {
     @Override
     public void updateRatingsAfterMatch(Match match) {
         Map<UUID, Integer> ratings = new HashMap<>();
-        Map<UUID, Integer> attackerRatings = new HashMap<>();
-        Map<UUID, Integer> defenderRatings = new HashMap<>();
-
         for (MatchPlayer mp : match.getPlayers()) {
             ratings.put(mp.getUser().getId(), mp.getUser().getEloRating());
-            if (mp.getPlayerRole() == PlayerRole.ATTACKER) {
-                attackerRatings.put(mp.getUser().getId(), mp.getUser().getAttackerElo());
-            } else {
-                defenderRatings.put(mp.getUser().getId(), mp.getUser().getDefenderElo());
-            }
         }
 
         applyMatch(match, ratings);
 
-        // Persist updated overall ratings and compute position ELO
         for (MatchPlayer mp : match.getPlayers()) {
             User user = mp.getUser();
             user.setEloRating(ratings.get(user.getId()));
-
-            // Position ELO: same formula but using position-specific ratings
-            TeamColor color = mp.getTeamColor();
-            List<MatchPlayer> myTeam = match.getPlayers().stream()
-                .filter(p -> p.getTeamColor() == color).toList();
-            List<MatchPlayer> oppTeam = match.getPlayers().stream()
-                .filter(p -> p.getTeamColor() != color).toList();
-
-            double myPosTeamElo = myTeam.stream().mapToInt(p -> {
-                if (p.getPlayerRole() == PlayerRole.ATTACKER)
-                    return attackerRatings.getOrDefault(p.getUser().getId(), DEFAULT_ELO);
-                else
-                    return defenderRatings.getOrDefault(p.getUser().getId(), DEFAULT_ELO);
-            }).average().orElse(DEFAULT_ELO);
-
-            double oppPosTeamElo = oppTeam.stream().mapToInt(p -> {
-                if (p.getPlayerRole() == PlayerRole.ATTACKER)
-                    return attackerRatings.getOrDefault(p.getUser().getId(), DEFAULT_ELO);
-                else
-                    return defenderRatings.getOrDefault(p.getUser().getId(), DEFAULT_ELO);
-            }).average().orElse(DEFAULT_ELO);
-
-            TeamColor winner = match.winnerColor();
-            double s = calculateScore(match.scoreFor(color), match.scoreAgainst(color),
-                winner == color);
-            double pPos = expectedProbability(myPosTeamElo, oppPosTeamElo);
-
-            if (mp.getPlayerRole() == PlayerRole.ATTACKER) {
-                int posOld = attackerRatings.getOrDefault(user.getId(), DEFAULT_ELO);
-                int posNew = (int) Math.round(posOld + K * (s - pPos));
-                user.setAttackerElo(posNew);
-            } else {
-                int posOld = defenderRatings.getOrDefault(user.getId(), DEFAULT_ELO);
-                int posNew = (int) Math.round(posOld + K * (s - pPos));
-                user.setDefenderElo(posNew);
-            }
-
             userRepository.save(user);
         }
     }

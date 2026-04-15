@@ -25,4 +25,10 @@ public interface MatchPlayerRepository extends JpaRepository<MatchPlayer, UUID> 
     @Query("SELECT mp FROM MatchPlayer mp JOIN FETCH mp.match m JOIN FETCH mp.user u " +
            "WHERE mp.eloAfter IS NOT NULL AND m.playedAt BETWEEN :from AND :to ORDER BY m.playedAt ASC")
     List<MatchPlayer> findWithEloDataInPeriod(Instant from, Instant to);
+
+    @Query("SELECT mp.playerRole, COALESCE(SUM(mp.eloChange), 0) " +
+           "FROM MatchPlayer mp " +
+           "WHERE mp.user.id = :userId AND mp.eloChange IS NOT NULL " +
+           "GROUP BY mp.playerRole")
+    List<Object[]> sumEloChangeByUserGroupedByRole(UUID userId);
 }

@@ -224,29 +224,42 @@
 
 	<!-- Step 2: Team Suggestion -->
 	{#if step === 2}
+		{#snippet swapIcon()}
+			<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M7 16h13m0 0-3-3m3 3-3 3M17 8H4m0 0 3 3M4 8l3-3"/>
+			</svg>
+		{/snippet}
+
 		<div class="animate-fade-in-up">
 			<h1 class="text-2xl font-black text-gray-900 mb-1 brand-heading">Team Suggestion</h1>
-			<p class="text-gray-500 text-sm mb-4">Balanced by ranking. Tap swap to adjust.</p>
+			<p class="text-gray-500 text-sm mb-4">Balanced by ranking. Tap swap icons to adjust.</p>
 
-			<div class="grid grid-cols-2 gap-4">
+			<div class="relative grid grid-cols-2 gap-8">
 				<!-- Yellow Team -->
 				<div class="bg-[#fac400]/8 border-2 border-[#fac400]/25 rounded-xl p-4">
 					<div class="flex items-center gap-2 mb-3">
 						<div class="w-4 h-4 rounded-full bg-brand-yellow"></div>
 						<span class="font-black text-brand-blue">Yellow</span>
 					</div>
-					{#if yellowAttacker}
-						<div class="space-y-2">
-							<div class="bg-white rounded-lg p-2">
-								<p class="text-[10px] text-brand-blue/60 uppercase font-bold">Attacker</p>
-								<p class="font-semibold text-sm">{yellowAttacker.displayName}</p>
-							</div>
-							<div class="bg-white rounded-lg p-2">
-								<p class="text-[10px] text-brand-blue/60 uppercase font-bold">Defender</p>
-								<p class="font-semibold text-sm">{yellowDefender?.displayName}</p>
-							</div>
+					<div class="relative space-y-2">
+						<div class="bg-white rounded-lg p-2">
+							<p class="text-[10px] text-brand-blue/60 uppercase font-bold">Attacker</p>
+							<p class="font-semibold text-sm truncate">{yellowAttacker?.displayName ?? ''}</p>
 						</div>
-					{/if}
+						<div class="bg-white rounded-lg p-2">
+							<p class="text-[10px] text-brand-blue/60 uppercase font-bold">Defender</p>
+							<p class="font-semibold text-sm truncate">{yellowDefender?.displayName ?? ''}</p>
+						</div>
+						<!-- Vertical role swap floating inside Yellow box -->
+						<button
+							onclick={() => swapPlayers('ya', 'yd')}
+							aria-label="Swap yellow attacker and defender"
+							title="Swap yellow roles"
+							class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-brand-gray bg-transparent text-brand-blue hover:bg-white/60 hover:border-brand-it-blue active:scale-95 transition-all flex items-center justify-center z-10"
+						>
+							<span class="rotate-90 flex">{@render swapIcon()}</span>
+						</button>
+					</div>
 				</div>
 
 				<!-- White Team -->
@@ -255,31 +268,47 @@
 						<div class="w-4 h-4 rounded-full bg-brand-gray border border-gray-400"></div>
 						<span class="font-black text-gray-700">White</span>
 					</div>
-					{#if whiteAttacker}
-						<div class="space-y-2">
-							<div class="bg-white rounded-lg p-2">
-								<p class="text-[10px] text-gray-500 uppercase font-bold">Attacker</p>
-								<p class="font-semibold text-sm">{whiteAttacker.displayName}</p>
-							</div>
-							<div class="bg-white rounded-lg p-2">
-								<p class="text-[10px] text-gray-500 uppercase font-bold">Defender</p>
-								<p class="font-semibold text-sm">{whiteDefender?.displayName}</p>
-							</div>
+					<div class="relative space-y-2">
+						<div class="bg-white rounded-lg p-2">
+							<p class="text-[10px] text-gray-500 uppercase font-bold">Attacker</p>
+							<p class="font-semibold text-sm truncate">{whiteAttacker?.displayName ?? ''}</p>
 						</div>
-					{/if}
+						<div class="bg-white rounded-lg p-2">
+							<p class="text-[10px] text-gray-500 uppercase font-bold">Defender</p>
+							<p class="font-semibold text-sm truncate">{whiteDefender?.displayName ?? ''}</p>
+						</div>
+						<!-- Vertical role swap floating inside White box -->
+						<button
+							onclick={() => swapPlayers('wa', 'wd')}
+							aria-label="Swap white attacker and defender"
+							title="Swap white roles"
+							class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-brand-gray bg-transparent text-brand-blue hover:bg-white/60 hover:border-brand-it-blue active:scale-95 transition-all flex items-center justify-center z-10"
+						>
+							<span class="rotate-90 flex">{@render swapIcon()}</span>
+						</button>
+					</div>
 				</div>
+
+				<!-- Horizontal team swap buttons floating over the gap -->
+				<button
+					onclick={() => swapPlayers('ya', 'wa')}
+					aria-label="Swap attackers between teams"
+					title="Swap attackers"
+					class="absolute left-1/2 top-[5.25rem] -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-brand-gray bg-white text-brand-blue shadow-md hover:bg-brand-cloud-blue hover:border-brand-it-blue active:scale-95 transition-all flex items-center justify-center z-20"
+				>
+					{@render swapIcon()}
+				</button>
+				<button
+					onclick={() => swapPlayers('yd', 'wd')}
+					aria-label="Swap defenders between teams"
+					title="Swap defenders"
+					class="absolute left-1/2 top-[9.25rem] -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-brand-gray bg-white text-brand-blue shadow-md hover:bg-brand-cloud-blue hover:border-brand-it-blue active:scale-95 transition-all flex items-center justify-center z-20"
+				>
+					{@render swapIcon()}
+				</button>
 			</div>
 
-			<div class="flex gap-2 mt-4">
-				<button onclick={() => swapPlayers('ya', 'wa')} class="flex-1 py-2 rounded-lg border border-brand-gray text-sm font-semibold hover:bg-brand-cloud-blue hover:border-brand-it-blue transition-all">Swap Attackers</button>
-				<button onclick={() => swapPlayers('yd', 'wd')} class="flex-1 py-2 rounded-lg border border-brand-gray text-sm font-semibold hover:bg-brand-cloud-blue hover:border-brand-it-blue transition-all">Swap Defenders</button>
-			</div>
-			<div class="flex gap-2 mt-2">
-				<button onclick={() => swapPlayers('ya', 'yd')} class="flex-1 py-2 rounded-lg border border-brand-gray text-sm font-semibold hover:bg-brand-cloud-blue hover:border-brand-it-blue transition-all">Swap Yellow Roles</button>
-				<button onclick={() => swapPlayers('wa', 'wd')} class="flex-1 py-2 rounded-lg border border-brand-gray text-sm font-semibold hover:bg-brand-cloud-blue hover:border-brand-it-blue transition-all">Swap White Roles</button>
-			</div>
-
-			<div class="flex gap-3 mt-4">
+			<div class="flex gap-3 mt-6">
 				<button onclick={() => step = 1} class="flex-1 py-3 rounded-xl border border-brand-gray font-bold hover:bg-brand-cloud-blue transition-colors">Back</button>
 				<button onclick={confirmTeams} class="flex-1 py-3 rounded-xl bg-brand-blue text-white font-bold hover:bg-brand-blue/90 transition-colors">Confirm Teams</button>
 			</div>

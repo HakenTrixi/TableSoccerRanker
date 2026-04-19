@@ -9,6 +9,30 @@ sonar {
     properties {
         property("sonar.projectKey", "Trixi-software_TableSoccerRanker")
         property("sonar.organization", "trixi-software")
+        property("sonar.projectName", "TableSoccerRanker")
+        // Scan the whole monorepo, not just the gradle project
+        property("sonar.projectBaseDir", rootDir.parent!!)
+        property(
+            "sonar.sources",
+            listOf(
+                "backend/src/main/java",
+                "frontend/src",
+                "backend/Dockerfile",
+                "frontend/Dockerfile",
+                "docker-compose.yml",
+            ).joinToString(","),
+        )
+        property("sonar.tests", "backend/src/test/java")
+        property(
+            "sonar.exclusions",
+            listOf(
+                "**/node_modules/**",
+                "**/.svelte-kit/**",
+                "**/build/**",
+                "**/.gradle/**",
+                "**/bin/**",
+            ).joinToString(","),
+        )
     }
 }
 
